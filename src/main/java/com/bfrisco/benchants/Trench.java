@@ -82,8 +82,6 @@ public class Trench extends JavaPlugin implements Listener, CommandExecutor {
             return true;
         }
 
-        getLogger().info(Arrays.toString(args));
-
         if ("reload".equalsIgnoreCase(args[0])) {
             getLogger().info("Reloading config...");
             reloadConfig();
@@ -144,8 +142,6 @@ public class Trench extends JavaPlugin implements Listener, CommandExecutor {
             case REDSTONE_ORE -> getRandomNumber(1, 5);
             default -> 0;
         };
-
-        getLogger().info("Experience for " + block.getType() + ": " + experience);
 
         if (experience > 0) {
             block.getWorld().spawn(block.getLocation(), ExperienceOrb.class).setExperience(5);
