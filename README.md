@@ -1,6 +1,12 @@
 # bEnchants
 ### Custom Minecraft Enchants for Theatria
 
+## Enchants
+```
+trench
+durability
+```
+
 ## Permissions
 ```
 benchants.enchant
@@ -8,8 +14,8 @@ benchants.enchant
 
 ## Commands
 ```
-/benchants apply trench
-/benchants remove trench
+/benchants apply [enchant]
+/benchants remove [enchant]
 /benchants reload
 ```
 
@@ -36,4 +42,7 @@ trench:
         "AMETHYST_BLOCK", "DEEPSLATE", "CRYING_OBSIDIAN", "OBSIDIAN", "MAGMA_BLOCK", "NETHER_GOLD_ORE",
         "GOLD_ORE"
     ]
+
+durability:
+  enchantable-items: ["DIAMOND_PICKAXE", "NETHERITE_PICKAXE", "DIAMOND_SHOVEL", "NETHERITE_SHOVEL"]
 ```

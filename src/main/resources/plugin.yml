@@ -1,6 +1,6 @@
 name: bEnchants
-version: 1.0.1
-main: com.bfrisco.benchants.Trench
+version: 1.0.2
+main: com.bfrisco.benchants.BEnchants
 author: bfrisco
 description: bEnchants custom enchants
 api-version: 1.17
