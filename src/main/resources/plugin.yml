@@ -1,0 +1,19 @@
+name: bEnchants
+version: 1.0.0
+main: com.bfrisco.benchants.Trench
+author: bfrisco
+description: bEnchants custom enchants
+api-version: 1.17
+depend: [NBTAPI]
+
+commands:
+  benchants:
+    description: Enchants an item
+    usage: |
+      /<command> <apply|remove> <enchant>
+      /<command> reload
+
+permissions:
+  benchants.enchant:
+    description: Allows player to enchant items with trench
+    default: op
