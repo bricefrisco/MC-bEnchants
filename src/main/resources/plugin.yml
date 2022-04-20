@@ -7,7 +7,7 @@ api-version: 1.18
 depend: [NBTAPI]
 
 commands:
-  bactivate:
+  ancientpower:
     description: Toggle an items enchantment
   benchants:
     description: Enchants an item

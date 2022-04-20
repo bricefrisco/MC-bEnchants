@@ -6,6 +6,7 @@ import com.bfrisco.benchants.commands.PlayerCommands;
 import com.bfrisco.benchants.enchants.Durability;
 import com.bfrisco.benchants.enchants.Trench;
 import com.bfrisco.benchants.utils.Toggle;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -29,13 +30,13 @@ public class BEnchants extends JavaPlugin {
     public void onEnable() {
         this.getConfig().options().copyDefaults();
         saveDefaultConfig();
-        Bukkit.getServer().getConsoleSender().sendMessage("ITS WORKINGGG ITTTS WOOOORKINNNGGG");
+        Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "ITS WORKINGGG ITTTS WOOOORKINNNGGG");
         Bukkit.getPluginManager().registerEvents(new Trench(), this);
         Bukkit.getPluginManager().registerEvents(new Durability(), this);
         Bukkit.getPluginManager().registerEvents(new Toggle(), this);
 
         Objects.requireNonNull(getCommand("benchants")).setExecutor(new Commands());
-        Objects.requireNonNull(getCommand("bactivate")).setExecutor(new PlayerCommands());
+        Objects.requireNonNull(getCommand("ancientpower")).setExecutor(new PlayerCommands());
 
     }
 }

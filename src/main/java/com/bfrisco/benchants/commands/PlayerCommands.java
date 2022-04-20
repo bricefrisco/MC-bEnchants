@@ -1,33 +1,24 @@
 package com.bfrisco.benchants.commands;
 
-import com.bfrisco.benchants.enchants.Durability;
-import com.bfrisco.benchants.enchants.Trench;
 import com.bfrisco.benchants.utils.Toggle;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
-
-import java.util.EventListener;
 import java.util.List;
 
-public class PlayerCommands implements CommandExecutor, EventListener {
+public class PlayerCommands implements CommandExecutor{
 
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label,String[] args) {
-        //HEX codes convert to capital letters when for whatever reason
-        //Using spigots api for lore, paper's is fucking weird
-
-
-
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 
         if (!(sender instanceof Player player)) return false;
 
@@ -44,25 +35,31 @@ public class PlayerCommands implements CommandExecutor, EventListener {
         ItemStack item = player.getInventory().getItemInMainHand();
         ItemMeta meta = item.getItemMeta();
         List<String> loreList = meta.getLore();
+        Material coolDown = Material.JIGSAW;
+        if ("imbue".equalsIgnoreCase(args[0]) ){
+            Bukkit.getServer().getConsoleSender().sendMessage("Successfully inside of imbue command");
+            if (!Toggle.isTitanTool(player)) return false;
+            player.sendMessage("passed titan test");
+            if (!(Toggle.isImbued(player))) {
+                player.sendMessage("Are you sure you want to imbue this tool for $1,000,000?");
+                player.sendMessage("Retype the command to confirm");
+                if (player.hasCooldown(coolDown)) {
+                    for (int i = 0; i < loreList.size(); i++) {
+                        //detects for any variant of ancient power color in titan tools
+                        //then either "deactivates" or "activates"
 
-        if ("toggle".equalsIgnoreCase(args[0])){
-            Bukkit.getServer().getConsoleSender().sendMessage("Successfully inside of toggle command");
-                boolean hadAncientPower = false;
-                for (int i = 0; i < loreList.size(); i++) {
-                    //detects for any variant of ancient power color in titan tools
-                    //then either "deactivates" or "activates"
+                        if (loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_RED) || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_YELLOW)
+                                || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_BLUE)) {
+                            Toggle.removeEnchantment(item, player, i);
+                            Toggle.addEnchantment(item, player, i);
+                        }
 
-                    if (loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_RED) || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_YELLOW)
-                            || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_BLUE) || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_POWER_ACTIVE)) {
-                        Toggle.removeEnchantment(item, player, i);
-                        hadAncientPower = true;
-                    } else if (loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_POWER_INACTIVE)) {
-                        Toggle.addEnchantment(item, player, i);
-                        hadAncientPower = true;
                     }
-
                 }
-            if (!hadAncientPower) player.sendMessage("You are not holding a titan tool");
+                player.setCooldown(coolDown, 250);
+            } else if (Toggle.isImbued(player)){
+                player.sendMessage("That item already has already been imbued!");
+            }
         }
 
 

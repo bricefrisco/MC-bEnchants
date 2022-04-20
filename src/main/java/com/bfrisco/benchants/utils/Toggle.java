@@ -86,11 +86,31 @@ public class Toggle implements Listener {
         for (int i = 0; i < loreList.size(); i++) {
             //detects for any variant of ancient power color in titan tools
             //then either "deactivates" or "activates"
-            if (loreList.get(i).equalsIgnoreCase(ANCIENT_RED) || loreList.get(i).equalsIgnoreCase(ANCIENT_YELLOW)
-                    || loreList.get(i).equalsIgnoreCase(ANCIENT_BLUE) || loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+            if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
                 return true;
             } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
                 return false;
+            }
+        }
+        return false;
+    }
+    public static boolean isImbued(Player p) {
+
+        ItemStack item = p.getInventory().getItemInMainHand();
+        List<String> loreList = null;
+        if (item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            loreList = meta.getLore();
+        }
+
+        for (int i = 0; i < loreList.size(); i++) {
+            //detects for any variant of ancient power color in titan tools
+            //then either "deactivates" or "activates"
+            if (loreList.get(i).equalsIgnoreCase(ANCIENT_RED) || loreList.get(i).equalsIgnoreCase(ANCIENT_YELLOW)
+                    || loreList.get(i).equalsIgnoreCase(ANCIENT_BLUE)) {
+                return false;
+            } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE) || loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+                return true;
             }
         }
         return false;
