@@ -51,22 +51,27 @@ public class Toggle implements Listener {
 
     public static boolean isTitanTool(Player p){
 
+        //TODO: figure out how to make this appear less often, do i need a method for this?
         ItemStack item = p.getInventory().getItemInMainHand();
         List<String> loreList = null;
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
             loreList = meta.getLore();
+            p.sendMessage("Debug: isTitanTool's check for itemMeta came back true");
         } else if (!item.hasItemMeta()) {
+            p.sendMessage("Debug: isTitanTool's check for itemMeta came back false");
             return false;
         }
 
         for (int i = 0; i < loreList.size(); i++) {
             //detects for any variant of ancient power color in titan tools
-            //then either "deactivates" or "activates"
+            //then returns true if any exist
             if (loreList.get(i).equalsIgnoreCase(ANCIENT_RED) || loreList.get(i).equalsIgnoreCase(ANCIENT_YELLOW)
                     || loreList.get(i).equalsIgnoreCase(ANCIENT_BLUE) || loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+                p.sendMessage("Debug: isTitanTool came back true");
                 return true;
             } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
+                p.sendMessage("Debug: isTitanTool came back false");
                 return true;
             }
 
@@ -82,10 +87,15 @@ public class Toggle implements Listener {
             ItemMeta meta = item.getItemMeta();
             loreList = meta.getLore();
         }
+        //checks to see if item in players hand is even a titan tool, return false if not
+        if (!(Toggle.isTitanTool(p))) {
+            //explains why isActive came back false
+            p.sendMessage("This is not a titan tool - Debug: isActive is false");
+            return false;
+        }
 
         for (int i = 0; i < loreList.size(); i++) {
-            //detects for any variant of ancient power color in titan tools
-            //then either "deactivates" or "activates"
+            //detects if ancient power is active or inactive on a titantool
             if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
                 return true;
             } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
@@ -134,6 +144,7 @@ public class Toggle implements Listener {
             }
         }
     }
+    //TODO: this is a fooking mess idk what to do here
     public static void removeEnchantment (ItemStack item, Player p, int i) {
         List<String> loreList = item.getItemMeta().getLore();
         ItemMeta meta = item.getItemMeta();

@@ -27,6 +27,7 @@ public class PlayerCommands implements CommandExecutor{
             return true;
         }
         if (!(((Player) sender).getInventory().getItemInMainHand().hasItemMeta())) {
+            //TODO: I DO NOT like this message popping up
             player.sendMessage(net.md_5.bungee.api.ChatColor.RED + "You must have an item in your hand!");
             return true;
         }
@@ -41,9 +42,13 @@ public class PlayerCommands implements CommandExecutor{
             if (!Toggle.isTitanTool(player)) return false;
             player.sendMessage("passed titan test");
             if (!(Toggle.isImbued(player))) {
+
+                //TODO:Fix message sending twice after confirmation
                 player.sendMessage("Are you sure you want to imbue this tool for $1,000,000?");
                 player.sendMessage("Retype the command to confirm");
                 if (player.hasCooldown(coolDown)) {
+
+                    //TODO:figure out how to get rid of this COULD BE NULL thing
                     for (int i = 0; i < loreList.size(); i++) {
                         //detects for any variant of ancient power color in titan tools
                         //then either "deactivates" or "activates"
