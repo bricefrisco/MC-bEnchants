@@ -7,7 +7,6 @@ import com.bfrisco.benchants.enchants.Durability;
 import com.bfrisco.benchants.enchants.Trench;
 import com.bfrisco.benchants.utils.Toggle;
 import org.bukkit.Bukkit;
-import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;

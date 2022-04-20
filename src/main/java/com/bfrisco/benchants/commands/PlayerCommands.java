@@ -25,11 +25,7 @@ public class PlayerCommands implements CommandExecutor, EventListener {
     public boolean onCommand(CommandSender sender, Command cmd, String label,String[] args) {
         //HEX codes convert to capital letters when for whatever reason
         //Using spigots api for lore, paper's is fucking weird
-        String ancientBlue = "§8Ancient Power§x§6§D§5§E§F§F ♆";
-        String ancientRed = "§8Ancient Power§x§F§F§0§0§0§0 ♆";
-        String ancientYellow = "§8Ancient Power§x§F§F§E§C§2§7 ♆";
-        String ancientPowerActive = "§8Ancient Power §x§F§F§0§0§4§C♆";
-        String ancientGray = "§8Ancient Power ♆";
+
 
 
 
@@ -48,9 +44,6 @@ public class PlayerCommands implements CommandExecutor, EventListener {
         ItemStack item = player.getInventory().getItemInMainHand();
         ItemMeta meta = item.getItemMeta();
         List<String> loreList = meta.getLore();
-        //if ((loreList != null && !(loreList.contains("♆")))) {player.sendMessage("You must be holding a Titan tool");return false;}
-
-
 
         if ("toggle".equalsIgnoreCase(args[0])){
             Bukkit.getServer().getConsoleSender().sendMessage("Successfully inside of toggle command");
@@ -59,11 +52,11 @@ public class PlayerCommands implements CommandExecutor, EventListener {
                     //detects for any variant of ancient power color in titan tools
                     //then either "deactivates" or "activates"
 
-                    if (loreList.get(i).equalsIgnoreCase(ancientRed) || loreList.get(i).equalsIgnoreCase(ancientYellow)
-                            || loreList.get(i).equalsIgnoreCase(ancientBlue) || loreList.get(i).equalsIgnoreCase(ancientPowerActive)) {
+                    if (loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_RED) || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_YELLOW)
+                            || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_BLUE) || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_POWER_ACTIVE)) {
                         Toggle.removeEnchantment(item, player, i);
                         hadAncientPower = true;
-                    } else if (loreList.get(i).equalsIgnoreCase(ancientGray)) {
+                    } else if (loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_POWER_INACTIVE)) {
                         Toggle.addEnchantment(item, player, i);
                         hadAncientPower = true;
                     }

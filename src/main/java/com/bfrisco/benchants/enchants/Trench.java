@@ -1,6 +1,7 @@
 package com.bfrisco.benchants.enchants;
 
 import com.bfrisco.benchants.BEnchants;
+import com.bfrisco.benchants.utils.Toggle;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -56,6 +57,8 @@ public class Trench implements Listener {
             }
         }
     }
+
+
 
     public static void apply(ItemStack item, Player player) {
         if (!ENCHANTABLE_ITEMS.contains(item.getType())) {
