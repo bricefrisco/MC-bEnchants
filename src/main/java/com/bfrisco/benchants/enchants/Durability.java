@@ -40,7 +40,7 @@ public class Durability implements Listener {
             return;
         }
 
-        BEnchants.LOGGER.info("Enchanting item with durability...");
+        BEnchants.LOGGER.info(player + " enchanted item with durability...");
         NBTItem nbti = new NBTItem(item);
         nbti.setBoolean("durability", Boolean.TRUE);
         nbti.applyNBT(item);
@@ -53,7 +53,7 @@ public class Durability implements Listener {
             return;
         }
 
-        BEnchants.LOGGER.info("Removing durability enchantment from item...");
+        BEnchants.LOGGER.info(player + " removed durability enchantment from item...");
         NBTItem nbti = new NBTItem(item);
         nbti.setBoolean("durability", Boolean.FALSE);
         nbti.applyNBT(item);

@@ -68,7 +68,7 @@ public class Trench implements Listener {
             return;
         }
 
-        BEnchants.LOGGER.info("Enchanting item with trench...");
+        BEnchants.LOGGER.info(player + " has enchanted item with trench...");
         NBTItem nbti = new NBTItem(item);
         nbti.setBoolean("trench", Boolean.TRUE);
         nbti.applyNBT(item);
@@ -81,7 +81,7 @@ public class Trench implements Listener {
             return;
         }
 
-        BEnchants.LOGGER.info("Removing trench enchantment from item...");
+        BEnchants.LOGGER.info(player + "has removed trench enchantment from item...");
         NBTItem nbti = new NBTItem(item);
         nbti.setBoolean("trench", Boolean.FALSE);
         nbti.applyNBT(item);
