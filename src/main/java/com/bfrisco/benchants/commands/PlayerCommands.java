@@ -17,8 +17,11 @@ public class PlayerCommands implements CommandExecutor{
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 
+
         if (!(sender instanceof Player player)) return false;
-        if (!(Toggle.isTitanTool((Player)sender,Toggle.loreList((Player) sender)))) return false;
+        player.sendMessage(ChatColor.RED + "------Debug------");
+        if (!(Toggle.isTitanTool(player,Toggle.loreList(player)))) return false;
+        if (Toggle.loreList(player) == null) return false;
         if (!(player.hasPermission("benchants.imbue"))) {
             player.sendMessage(ChatColor.RED + "No permission.");
             return false;
@@ -61,7 +64,7 @@ public class PlayerCommands implements CommandExecutor{
                     } return false;
                 } return false;
             } else if (Toggle.isImbued(Toggle.loreList(player))){
-                player.sendMessage("That item already has already been imbued!");
+                player.sendMessage(ChatColor.RED + "That item already has already been imbued!");
             } return false;
         } return true;
     }

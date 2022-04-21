@@ -3,6 +3,7 @@ package com.bfrisco.benchants.commands;
 import com.bfrisco.benchants.BEnchants;
 import com.bfrisco.benchants.enchants.Durability;
 import com.bfrisco.benchants.enchants.Trench;
+import com.bfrisco.benchants.utils.Toggle;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +17,7 @@ public class Commands implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!(sender instanceof Player player)) return false;
-
+        if (!(Toggle.isTitanTool((Player) sender,Toggle.loreList((Player)sender)))) return false;
         if (!player.hasPermission("benchants.enchant")) {
             player.sendMessage(ChatColor.RED + "No permission.");
             return true;

@@ -36,7 +36,7 @@ public class BEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Toggle(), this);
 
         Objects.requireNonNull(getCommand("benchants")).setExecutor(new Commands());
-        Objects.requireNonNull(getCommand("ancientpower")).setExecutor(new PlayerCommands());
+        Objects.requireNonNull(getCommand("ancient")).setExecutor(new PlayerCommands());
 
     }
 }

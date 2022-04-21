@@ -27,9 +27,10 @@ public class Toggle implements Listener {
         ItemStack item = p.getInventory().getItemInMainHand();
         if (!p.isSneaking()) return;
         if (!event.getAction().isRightClick()) return;
-        if (!isTitanTool(p,loreList(p))) return;
-        if (!p.hasCooldown(coolDown)) return;
         p.sendMessage(ChatColor.RED + "------Debug Start------");
+        if (!isTitanTool(p,loreList(p))) return;
+        if (p.hasCooldown(coolDown)) return;
+
 
 
         if ((p.hasPermission("benchants.toggle") && event.getAction().isRightClick()) && (event.getPlayer().isSneaking())) {
@@ -61,10 +62,10 @@ public class Toggle implements Listener {
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
             loreList = meta.getLore();
-            p.sendMessage("Dbug5: isTitanTool's check for itemMeta came back true");
+            p.sendMessage("Dbug5: loreList returned");
             return loreList;
         } else if (!item.hasItemMeta()) {
-            p.sendMessage("Dbug6: isTitanTool's check for itemMeta came back false");
+            p.sendMessage("Dbug6: loreList returned null");
             return null;
         } return null;
 
@@ -75,31 +76,23 @@ public class Toggle implements Listener {
         p.sendMessage(ChatColor.YELLOW + "Dbug4: inside isTitanTool Boolean");
 
         if (lorelist ==null) return false;
-            for (int i = 0; i < lorelist.size(); i++) {
-                //detects for any variant of ancient power color in titan tools
-                //then returns true if any exist
-                if (lorelist.get(i).equalsIgnoreCase(ANCIENT_RED) || lorelist.get(i).equalsIgnoreCase(ANCIENT_YELLOW)
-                        || lorelist.get(i).equalsIgnoreCase(ANCIENT_BLUE) || lorelist.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
-                    p.sendMessage("Dbug7: isTitanTool came back true due to red,yellow,blue,active lore detection");
-                    return true;
-                } else if (lorelist.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
-                    p.sendMessage("Dbug8: isTitanTool came back true due to inactive lore detection");
-                    return true;
-                }
-            } return false;
+        for (int i = 0; i < lorelist.size(); i++) {
+            //detects for any variant of ancient power color in titan tools
+            //then returns true if any exist
+            if (lorelist.get(i).equalsIgnoreCase(ANCIENT_RED) || lorelist.get(i).equalsIgnoreCase(ANCIENT_YELLOW)
+                    || lorelist.get(i).equalsIgnoreCase(ANCIENT_BLUE) || lorelist.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+                p.sendMessage("Dbug7: isTitanTool came back true due to red,yellow,blue,active lore detection");
+                return true;
+            } else if (lorelist.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
+                p.sendMessage("Dbug8: isTitanTool came back true due to inactive lore detection");
+                return true;
+            }
+        } return false;
     }
 
     public static boolean isActive(Player p,List<String> loreList){
 
         if (loreList ==null) return false;
-        p.sendMessage(ChatColor.YELLOW + "Dbug9: Sent to check if item held by player is is titan tool");
-        //checks to see if item in players hand is even a titan tool, return false if not
-        //Does this need to exist? It might exist due to external classes calling this method
-        if (!(Toggle.isTitanTool(p,loreList))) {
-            //explains why isActive came back false
-            p.sendMessage("Dbug10: This is not a titan tool - Debug: isActive is false");
-            return false;
-        }
         for (int i = 0; i < loreList.size(); i++) {
             //detects if ancient power is active or inactive on a titantool
             if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
@@ -130,16 +123,22 @@ public class Toggle implements Listener {
     public static void toggleActive(Player p,ItemStack item,List<String> loreList){
 
         if (loreList ==null) return;
+        boolean isImbued = false;
         for (int i = 0; i < loreList.size(); i++) {
-            //detects for any variant of ancient power color in titan tools
-            //then either "deactivates" or "activates"
-            if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
-                removeEnchantment(item, p, i);
-                return;
-            } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
-                addEnchantment(item, p, i);
-                return;
-            }
+        //detects for any variant of ancient power color in titan tools
+        //then either "deactivates" or "activates"
+        if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+            removeEnchantment(item, p, i);
+            isImbued = true;
+
+        } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
+            addEnchantment(item, p, i);
+            isImbued = true;
+        }
+
+        }
+        if (!(isImbued)) {
+            p.sendMessage(ChatColor.RED + "This tool cannot be activated without being imbued first!");
         }
 
     }
