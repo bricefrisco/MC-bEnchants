@@ -27,10 +27,13 @@ public class Toggle implements Listener {
         if (player.hasCooldown(coolDown)) return;
         if (!player.isSneaking()) return; //should reduce the amount of times the interactevent continues to use resources
         if (!event.getAction().isRightClick()) return; //should reduce the amount of times the interactevent continues to use resources
+
         player.setCooldown(coolDown,40); //reduces the amount of times this can be spammed
+
         ItemStack item = player.getInventory().getItemInMainHand();
-        List<String> loreList = loreList(player);
+        if (!(item.hasItemMeta())) return; //return if air or other item without metadata
         player.sendMessage(ChatColor.RED + "------Debug Start------");
+        List<String> loreList = loreList(player);
         if (!isTitanTool(player,loreList)) return;
         player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to !isImbued(loreList(p) check");
         if (!isImbued(loreList)){
@@ -58,7 +61,7 @@ public class Toggle implements Listener {
         ItemStack item = player.getInventory().getItemInMainHand();
         ItemMeta meta = item.getItemMeta();
         List<String> loreList = meta.getLore();
-        player.sendMessage("Dbug5: loreList verified for condition");
+        player.sendMessage("Dbug5: loreList obtained");
         return loreList;
     }
 
@@ -85,10 +88,10 @@ public class Toggle implements Listener {
         for (String s : loreList) {
             //detects if ancient power is active or inactive on a titantool
             if (s.equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
-                player.sendMessage("Ancient power is active!");
+                player.sendMessage(player.getLocation() + " Ancient power is active!");
                 return true;
             } else if (s.equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
-                player.sendMessage("Ancient power is not active!");
+                player.sendMessage(player.getLocation() + " Ancient power is not active!");
                 return false;
             }
         } return false;
@@ -136,8 +139,8 @@ public class Toggle implements Listener {
         meta.setLore(loreList);
         item.setItemMeta(meta);
         new BEnchantEffects().addEffect(player);
-        Trench.remove(item,player);
-        Durability.remove(item,player);
+    /*    Trench.remove(item,player);
+        Durability.remove(item,player);*/
     }
     public static void addEnchantment (List<String> loreList, ItemStack item, Player player, int i) {
         loreList.set(i,ANCIENT_POWER_ACTIVE);
@@ -145,8 +148,8 @@ public class Toggle implements Listener {
         meta.setLore(loreList);
         item.setItemMeta(meta);
         new BEnchantEffects().removeEffect(player);
-        Trench.apply(item, player);
-        Durability.apply(item, player);
+        /*Trench.apply(item, player);
+        Durability.apply(item, player);*/
     }
 
 

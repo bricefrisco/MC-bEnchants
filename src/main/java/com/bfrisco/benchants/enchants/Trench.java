@@ -31,16 +31,23 @@ public class Trench implements Listener {
     @EventHandler
     @SuppressWarnings("unused")
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        if (IGNORE_LOCATIONS.contains(event.getBlock().getLocation())) {
+       if (IGNORE_LOCATIONS.contains(event.getBlock().getLocation())) {
             IGNORE_LOCATIONS.remove(event.getBlock().getLocation());
             return;
         }
-
+        Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
-        if (!hasTrench(item)) return;
+//*****************Proposed new check, removes nbtapi dependency*********************************
+        if (!item.hasItemMeta()) return;
+        if (!(Toggle.isTitanTool(player,Toggle.loreList(player)))) return;
+        if (!Toggle.isActive(Toggle.loreList(player),player)) return;
+//*****************Proposed new check, removes nbtapi dependency*********************************
+
+        //if (!hasTrench(item)) return;
 
         for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
             if (block.getLocation().equals(event.getBlock().getLocation())) {
+                player.sendMessage(player.getLocation() + " Inside of trench block break event!");
                 continue;
             }
 
