@@ -17,7 +17,7 @@ public class PlayerCommands implements CommandExecutor{
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 
-
+        if (args.length == 0) return false;
         if (!(sender instanceof Player player)) return false;
         player.sendMessage(ChatColor.RED + "------Debug------");
         if (!(Toggle.isTitanTool(player,Toggle.loreList(player)))) return false;
@@ -26,25 +26,20 @@ public class PlayerCommands implements CommandExecutor{
             player.sendMessage(ChatColor.RED + "No permission.");
             return false;
         }
-        if (!((Player) sender).getInventory().getItemInMainHand().hasItemMeta()) {
-            //TODO: I DO NOT like this message popping up
-            player.sendMessage(net.md_5.bungee.api.ChatColor.RED + "You must have an item in your hand!");
-            return true;
-        }
-        if (args.length == 0) return false;
-
         ItemStack item = player.getInventory().getItemInMainHand();
         Material coolDown = Material.JIGSAW;
         if ("imbue".equalsIgnoreCase(args[0]) ){
             Bukkit.getServer().getConsoleSender().sendMessage("Successfully inside of imbue command");
-            if (!(Toggle.isTitanTool(player,Toggle.loreList(player)))) return false;
-            player.sendMessage("passed titan test");
+            //if (!(Toggle.isTitanTool(player,Toggle.loreList(player)))) return false;
+            if (Toggle.isImbued(Toggle.loreList(player))) {
+                player.sendMessage(ChatColor.GREEN + "That item is already imbued!");
+            }
             if (!(Toggle.isImbued(Toggle.loreList(player)))) {
 
                 //TODO:Fix message sending twice after confirmation
                 if (!player.hasCooldown(coolDown)) {
-                    player.sendMessage("Are you sure you want to imbue this tool for $1,000,000?");
-                    player.sendMessage("Retype the command to confirm");
+                    player.sendMessage(ChatColor.GREEN + "Are you sure you want to imbue this tool for $1,000,000?");
+                    player.sendMessage(ChatColor.GREEN + "Retype the command to confirm");
                     player.setCooldown(coolDown, 200);
                     return false;
                 }
@@ -63,8 +58,7 @@ public class PlayerCommands implements CommandExecutor{
                         }
                     } return false;
                 } return false;
-            } else if (Toggle.isImbued(Toggle.loreList(player))){
-                player.sendMessage(ChatColor.RED + "That item already has already been imbued!");
+
             } return false;
         } return true;
     }
