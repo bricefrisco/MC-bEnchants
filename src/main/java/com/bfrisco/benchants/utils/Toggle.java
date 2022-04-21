@@ -24,14 +24,17 @@ public class Toggle implements Listener {
 
         Player p = event.getPlayer();
         Material coolDown = Material.JIGSAW;
+        ItemStack item = p.getInventory().getItemInMainHand();
         if (!p.isSneaking()) return;
         if (!event.getAction().isRightClick()) return;
+        if (!isTitanTool(p,loreList(p))) return;
+        if (!p.hasCooldown(coolDown)) return;
         p.sendMessage(ChatColor.RED + "------Debug Start------");
 
 
-        if ((p.hasPermission("benchants.toggle") && event.getAction().isRightClick()) && (event.getPlayer().isSneaking()) && isTitanTool(p,loreList(p)) && !p.hasCooldown(coolDown) ) {
+        if ((p.hasPermission("benchants.toggle") && event.getAction().isRightClick()) && (event.getPlayer().isSneaking())) {
 
-            p.sendMessage(ChatColor.AQUA + "Dbug1: Passed perm check, rightclick sneaking check, isTitanTool check & does not have cooldown");
+            p.sendMessage(ChatColor.AQUA + "Dbug1: Passed perm check, rightclick sneaking check");
 
             p.setCooldown(coolDown,25);
             p.sendMessage(ChatColor.AQUA + "DebugSend: Sent to isActive check");
@@ -39,13 +42,13 @@ public class Toggle implements Listener {
 
                 p.sendMessage(ChatColor.AQUA + "Dbug2: Passed isActive test");
                 p.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive method");
-                toggleActive(p);
+                toggleActive(p,item,loreList(p));
 
             } else if (!(isActive(p,loreList(p)))){
 
                 p.sendMessage( ChatColor.AQUA + "Dbug3: Did not pass isActive text");
                 p.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive method");
-                toggleActive(p);
+                toggleActive(p,item,loreList(p));
             }
 
         }
@@ -71,7 +74,7 @@ public class Toggle implements Listener {
     public static boolean isTitanTool(Player p,List<String> lorelist){
         p.sendMessage(ChatColor.YELLOW + "Dbug4: inside isTitanTool Boolean");
 
-        if (lorelist !=null) {
+        if (lorelist ==null) return false;
             for (int i = 0; i < lorelist.size(); i++) {
                 //detects for any variant of ancient power color in titan tools
                 //then returns true if any exist
@@ -84,67 +87,61 @@ public class Toggle implements Listener {
                     return true;
                 }
             } return false;
-        } return false;
     }
 
     public static boolean isActive(Player p,List<String> loreList){
 
-        if (loreList !=null) {
-
-            p.sendMessage(ChatColor.YELLOW + "Dbug9: Sent to check if item held by player is is titan tool");
-            //checks to see if item in players hand is even a titan tool, return false if not
-            //Does this need to exist? It might exist due to external classes calling this method
-            if (!(Toggle.isTitanTool(p,loreList))) {
-                //explains why isActive came back false
-                p.sendMessage("Dbug10: This is not a titan tool - Debug: isActive is false");
+        if (loreList ==null) return false;
+        p.sendMessage(ChatColor.YELLOW + "Dbug9: Sent to check if item held by player is is titan tool");
+        //checks to see if item in players hand is even a titan tool, return false if not
+        //Does this need to exist? It might exist due to external classes calling this method
+        if (!(Toggle.isTitanTool(p,loreList))) {
+            //explains why isActive came back false
+            p.sendMessage("Dbug10: This is not a titan tool - Debug: isActive is false");
+            return false;
+        }
+        for (int i = 0; i < loreList.size(); i++) {
+            //detects if ancient power is active or inactive on a titantool
+            if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+                    return true;
+            } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
                 return false;
             }
-
-            for (int i = 0; i < loreList.size(); i++) {
-                //detects if ancient power is active or inactive on a titantool
-                if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
-                        return true;
-                } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
-                    return false;
-                }
-            } return false;
         } return false;
+
     }
     public static boolean isImbued(List<String> loreList) {
 
-        if (loreList !=null) {
+        if (loreList ==null) return false;
 
-            for (int i = 0; i < loreList.size(); i++) {
-                //detects for any variant of ancient power color in titan tools
-                //then either "deactivates" or "activates"
-                if (loreList.get(i).equalsIgnoreCase(ANCIENT_RED) || loreList.get(i).equalsIgnoreCase(ANCIENT_YELLOW)
-                        || loreList.get(i).equalsIgnoreCase(ANCIENT_BLUE)) {
-                    return false;
-                } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE) || loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
-                    return true;
-                }
+        for (int i = 0; i < loreList.size(); i++) {
+            //detects for any variant of ancient power color in titan tools
+            //then either "deactivates" or "activates"
+            if (loreList.get(i).equalsIgnoreCase(ANCIENT_RED) || loreList.get(i).equalsIgnoreCase(ANCIENT_YELLOW)
+                    || loreList.get(i).equalsIgnoreCase(ANCIENT_BLUE)) {
+                return false;
+            } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE) || loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+                return true;
             }
-            return false;
-        } return false;
-    }
-    public static void toggleActive(Player p){
-        ItemStack item = p.getInventory().getItemInMainHand();
-        List<String> loreList = null;
-        if (item.hasItemMeta()) {
-            ItemMeta meta = item.getItemMeta();
-            loreList = meta.getLore();
         }
+        return false;
+
+    }
+    public static void toggleActive(Player p,ItemStack item,List<String> loreList){
+
+        if (loreList ==null) return;
         for (int i = 0; i < loreList.size(); i++) {
             //detects for any variant of ancient power color in titan tools
             //then either "deactivates" or "activates"
             if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
-                removeEnchantment(item,p,i);
+                removeEnchantment(item, p, i);
                 return;
             } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
-                addEnchantment(item,p,i);
+                addEnchantment(item, p, i);
                 return;
             }
         }
+
     }
 
     //TODO: this is a fooking mess idk what to do here
