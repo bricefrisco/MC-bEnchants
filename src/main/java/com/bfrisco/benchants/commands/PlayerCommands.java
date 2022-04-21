@@ -34,14 +34,14 @@ public class PlayerCommands implements CommandExecutor{
         if (args.length == 0) return false;
 
         ItemStack item = player.getInventory().getItemInMainHand();
-        ItemMeta meta = item.getItemMeta();
-        List<String> loreList = meta.getLore();
+        /*ItemMeta meta = item.getItemMeta();
+        List<String> loreList = meta.getLore();*/
         Material coolDown = Material.JIGSAW;
         if ("imbue".equalsIgnoreCase(args[0]) ){
             Bukkit.getServer().getConsoleSender().sendMessage("Successfully inside of imbue command");
-            if (!Toggle.isTitanTool(player)) return false;
+            if (!Toggle.isTitanTool(player,Toggle.loreList(player))) return false;
             player.sendMessage("passed titan test");
-            if (!(Toggle.isImbued(player))) {
+            if (!(Toggle.isImbued(Toggle.loreList(player)))) {
 
                 //TODO:Fix message sending twice after confirmation
                 player.sendMessage("Are you sure you want to imbue this tool for $1,000,000?");
@@ -49,6 +49,8 @@ public class PlayerCommands implements CommandExecutor{
                 if (player.hasCooldown(coolDown)) {
 
                     //TODO:figure out how to get rid of this COULD BE NULL thing
+
+                    List<String> loreList = Toggle.loreList(player);
                     for (int i = 0; i < loreList.size(); i++) {
                         //detects for any variant of ancient power color in titan tools
                         //then either "deactivates" or "activates"
@@ -62,7 +64,7 @@ public class PlayerCommands implements CommandExecutor{
                     }
                 }
                 player.setCooldown(coolDown, 250);
-            } else if (Toggle.isImbued(player)){
+            } else if (Toggle.isImbued(Toggle.loreList(player))){
                 player.sendMessage("That item already has already been imbued!");
             }
         }
