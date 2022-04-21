@@ -29,10 +29,11 @@ public class Toggle implements Listener {
         if (!event.getAction().isRightClick()) return; //should reduce the amount of times the interactevent continues to use resources
         player.setCooldown(coolDown,40); //reduces the amount of times this can be spammed
         ItemStack item = player.getInventory().getItemInMainHand();
+        List<String> loreList = loreList(player);
         player.sendMessage(ChatColor.RED + "------Debug Start------");
-        if (!isTitanTool(player,loreList(player))) return;
+        if (!isTitanTool(player,loreList)) return;
         player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to !isImbued(loreList(p) check");
-        if (!isImbued(loreList(player))){
+        if (!isImbued(loreList)){
             player.sendMessage(ChatColor.AQUA + "DebugSend: Item is not imbued");
             return;
         }
@@ -42,11 +43,11 @@ public class Toggle implements Listener {
 
             player.sendMessage(ChatColor.AQUA + "Dbug1: Passed perm check");
             player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to isActive(loreList(p)) check");
-            if (isActive(loreList(player))){
+            if (isActive(loreList,player)){
                 player.sendMessage(ChatColor.AQUA + "Dbug2: Passed isActive(loreList(p)) test");
                 player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive(p,item,loreList(p)) method");
                 toggleActive(player,item);
-            } else if (!(isActive(loreList(player)))){
+            } else if (!(isActive(loreList,player))){
                 player.sendMessage( ChatColor.AQUA + "Dbug3: Did not pass isActive text");
                 player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive method");
                 toggleActive(player,item);
@@ -58,7 +59,7 @@ public class Toggle implements Listener {
         ItemStack item = player.getInventory().getItemInMainHand();
         ItemMeta meta = item.getItemMeta();
         List<String> loreList = meta.getLore();
-        player.sendMessage("Dbug5: loreList returned");
+        player.sendMessage("Dbug5: loreList verified for condition");
         return loreList;
     }
 
@@ -80,13 +81,15 @@ public class Toggle implements Listener {
         return false;
     }
 
-    public static boolean isActive(List<String> loreList){
+    public static boolean isActive(List<String> loreList, Player player){
 
         for (String s : loreList) {
             //detects if ancient power is active or inactive on a titantool
             if (s.equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+                player.sendMessage("Ancient power is active!");
                 return true;
             } else if (s.equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
+                player.sendMessage("Ancient power is not active!");
                 return false;
             }
         } return false;
