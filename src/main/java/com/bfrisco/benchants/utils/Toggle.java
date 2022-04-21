@@ -38,7 +38,6 @@ public class Toggle implements Listener {
             return;
         }
 
-
         if ((player.hasPermission("benchants.toggle"))) {
 
             player.sendMessage(ChatColor.AQUA + "Dbug1: Passed perm check");
@@ -46,11 +45,11 @@ public class Toggle implements Listener {
             if (isActive(loreList,player)){
                 player.sendMessage(ChatColor.AQUA + "Dbug2: Passed isActive(loreList(p)) test");
                 player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive(p,item,loreList(p)) method");
-                toggleActive(player,item);
-            } else if (!(isActive(loreList,player))){
+                toggleActive(player,item,loreList);
+            } else {
                 player.sendMessage( ChatColor.AQUA + "Dbug3: Did not pass isActive text");
                 player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive method");
-                toggleActive(player,item);
+                toggleActive(player,item,loreList);
             }
         }
     }
@@ -107,9 +106,9 @@ public class Toggle implements Listener {
             }
         } return false;
     }
-    public static void toggleActive(Player player,ItemStack item){
+    public static void toggleActive(Player player,ItemStack item,List<String> loreList){
 
-        List<String> loreList = loreList(player);
+
         boolean isImbued = false;
         assert loreList != null;
         for (int i = 0; i < loreList.size(); i++) {
