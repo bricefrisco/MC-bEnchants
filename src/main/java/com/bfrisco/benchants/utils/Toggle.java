@@ -22,149 +22,129 @@ public class Toggle implements Listener {
     @EventHandler
     public static void activateClick(PlayerInteractEvent event) {
 
-        Player p = event.getPlayer();
+        Player player = event.getPlayer();
         Material coolDown = Material.JIGSAW;
-        ItemStack item = p.getInventory().getItemInMainHand();
-        if (!p.isSneaking()) return;
-        if (!event.getAction().isRightClick()) return;
-        p.sendMessage(ChatColor.RED + "------Debug Start------");
-        if (!isTitanTool(p,loreList(p))) return;
-        if (p.hasCooldown(coolDown)) return;
-
-
-
-        if ((p.hasPermission("benchants.toggle") && event.getAction().isRightClick()) && (event.getPlayer().isSneaking())) {
-
-            p.sendMessage(ChatColor.AQUA + "Dbug1: Passed perm check, rightclick sneaking check");
-
-            p.setCooldown(coolDown,25);
-            p.sendMessage(ChatColor.AQUA + "DebugSend: Sent to isActive check");
-            if (isActive(p,loreList(p))){
-
-                p.sendMessage(ChatColor.AQUA + "Dbug2: Passed isActive test");
-                p.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive method");
-                toggleActive(p,item,loreList(p));
-
-            } else if (!(isActive(p,loreList(p)))){
-
-                p.sendMessage( ChatColor.AQUA + "Dbug3: Did not pass isActive text");
-                p.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive method");
-                toggleActive(p,item,loreList(p));
-            }
-
+        if (player.hasCooldown(coolDown)) return;
+        if (!player.isSneaking()) return; //should reduce the amount of times the interactevent continues to use resources
+        if (!event.getAction().isRightClick()) return; //should reduce the amount of times the interactevent continues to use resources
+        player.setCooldown(coolDown,40); //reduces the amount of times this can be spammed
+        ItemStack item = player.getInventory().getItemInMainHand();
+        player.sendMessage(ChatColor.RED + "------Debug Start------");
+        if (!isTitanTool(player,loreList(player))) return;
+        player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to !isImbued(loreList(p) check");
+        if (!isImbued(loreList(player))){
+            player.sendMessage(ChatColor.AQUA + "DebugSend: Item is not imbued");
+            return;
         }
 
+
+        if ((player.hasPermission("benchants.toggle"))) {
+
+            player.sendMessage(ChatColor.AQUA + "Dbug1: Passed perm check");
+            player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to isActive(loreList(p)) check");
+            if (isActive(loreList(player))){
+                player.sendMessage(ChatColor.AQUA + "Dbug2: Passed isActive(loreList(p)) test");
+                player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive(p,item,loreList(p)) method");
+                toggleActive(player,item);
+            } else if (!(isActive(loreList(player)))){
+                player.sendMessage( ChatColor.AQUA + "Dbug3: Did not pass isActive text");
+                player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive method");
+                toggleActive(player,item);
+            }
+        }
     }
 
-    public static List<String> loreList(Player p){
-        ItemStack item = p.getInventory().getItemInMainHand();
-        List<String> loreList;
-        if (item.hasItemMeta()) {
-            ItemMeta meta = item.getItemMeta();
-            loreList = meta.getLore();
-            p.sendMessage("Dbug5: loreList returned");
-            return loreList;
-        } else if (!item.hasItemMeta()) {
-            p.sendMessage("Dbug6: loreList returned null");
-            return null;
-        } return null;
-
-
+    public static List<String> loreList(Player player){
+        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemMeta meta = item.getItemMeta();
+        List<String> loreList = meta.getLore();
+        player.sendMessage("Dbug5: loreList returned");
+        return loreList;
     }
 
-    public static boolean isTitanTool(Player p,List<String> lorelist){
-        p.sendMessage(ChatColor.YELLOW + "Dbug4: inside isTitanTool Boolean");
-
-        if (lorelist ==null) return false;
-        for (int i = 0; i < lorelist.size(); i++) {
+    public static boolean isTitanTool(Player player,List<String> lorelist){
+        player.sendMessage(ChatColor.YELLOW + "Dbug4: inside isTitanTool Boolean");
+        if (lorelist == null) return false;
+        for (String s : lorelist) {
             //detects for any variant of ancient power color in titan tools
             //then returns true if any exist
-            if (lorelist.get(i).equalsIgnoreCase(ANCIENT_RED) || lorelist.get(i).equalsIgnoreCase(ANCIENT_YELLOW)
-                    || lorelist.get(i).equalsIgnoreCase(ANCIENT_BLUE) || lorelist.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
-                p.sendMessage("Dbug7: isTitanTool came back true due to red,yellow,blue,active lore detection");
+            if (s.equalsIgnoreCase(ANCIENT_RED) || s.equalsIgnoreCase(ANCIENT_YELLOW)
+                    || s.equalsIgnoreCase(ANCIENT_BLUE) || s.equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+                player.sendMessage("Dbug7: isTitanTool came back true due to red,yellow,blue,active lore detection");
                 return true;
-            } else if (lorelist.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
-                p.sendMessage("Dbug8: isTitanTool came back true due to inactive lore detection");
-                return true;
-            }
-        } return false;
-    }
-
-    public static boolean isActive(Player p,List<String> loreList){
-
-        if (loreList ==null) return false;
-        for (int i = 0; i < loreList.size(); i++) {
-            //detects if ancient power is active or inactive on a titantool
-            if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
-                    return true;
-            } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
-                return false;
-            }
-        } return false;
-
-    }
-    public static boolean isImbued(List<String> loreList) {
-
-        if (loreList ==null) return false;
-
-        for (int i = 0; i < loreList.size(); i++) {
-            //detects for any variant of ancient power color in titan tools
-            //then either "deactivates" or "activates"
-            if (loreList.get(i).equalsIgnoreCase(ANCIENT_RED) || loreList.get(i).equalsIgnoreCase(ANCIENT_YELLOW)
-                    || loreList.get(i).equalsIgnoreCase(ANCIENT_BLUE)) {
-                return false;
-            } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE) || loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+            } else if (s.equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
+                player.sendMessage("Dbug8: isTitanTool came back true due to inactive lore detection");
                 return true;
             }
         }
         return false;
-
     }
-    public static void toggleActive(Player p,ItemStack item,List<String> loreList){
 
-        if (loreList ==null) return;
+    public static boolean isActive(List<String> loreList){
+
+        for (String s : loreList) {
+            //detects if ancient power is active or inactive on a titantool
+            if (s.equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+                return true;
+            } else if (s.equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
+                return false;
+            }
+        } return false;
+    }
+    public static boolean isImbued(List<String> loreList) {
+
+        for (String s : loreList) {
+            //detects for any variant of ancient power color in titan tools
+            //then either "deactivates" or "activates"
+            if (s.equalsIgnoreCase(ANCIENT_RED) || s.equalsIgnoreCase(ANCIENT_YELLOW)
+                    || s.equalsIgnoreCase(ANCIENT_BLUE)) {
+                return false;
+            } else if (s.equalsIgnoreCase(ANCIENT_POWER_INACTIVE) || s.equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+                return true;
+            }
+        } return false;
+    }
+    public static void toggleActive(Player player,ItemStack item){
+
+        List<String> loreList = loreList(player);
         boolean isImbued = false;
+        assert loreList != null;
         for (int i = 0; i < loreList.size(); i++) {
-        //detects for any variant of ancient power color in titan tools
-        //then either "deactivates" or "activates"
-        if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
-            removeEnchantment(item, p, i);
-            isImbued = true;
-
-        } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
-            addEnchantment(item, p, i);
-            isImbued = true;
-        }
-
+            //detects for any variant of ancient power color in titan tools
+            //then either "deactivates" or "activates"
+            if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+                removeEnchantment(loreList,item, player, i);
+                isImbued = true;
+            } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
+                addEnchantment(loreList, item, player, i);
+                isImbued = true;
+            }
         }
         if (!(isImbued)) {
-            p.sendMessage(ChatColor.RED + "This tool cannot be activated without being imbued first!");
+            player.sendMessage(ChatColor.RED + "This tool cannot be activated without being imbued first!");
         }
 
     }
 
     //TODO: this is a fooking mess idk what to do here
-    public static void removeEnchantment (ItemStack item, Player p, int i) {
-        List<String> loreList = item.getItemMeta().getLore();
-        ItemMeta meta = item.getItemMeta();
+    public static void removeEnchantment (List<String> loreList, ItemStack item, Player player, int i) {
+
         loreList.set(i,ANCIENT_POWER_INACTIVE);
-        meta.setLore(loreList);
-        item.setItemMeta(meta);
-        p.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,p.getEyeLocation(),100);
-        p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE,10, 1);
-        Trench.remove(item,p);
-        Durability.remove(item,p);
-    }
-    public static void addEnchantment (ItemStack item, Player p, int i) {
-        List<String> loreList = item.getItemMeta().getLore();
         ItemMeta meta = item.getItemMeta();
-        loreList.set(i,ANCIENT_POWER_ACTIVE);
         meta.setLore(loreList);
         item.setItemMeta(meta);
-        p.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,p.getEyeLocation(),100);
-        p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BEACON_ACTIVATE,10, 1);
-        Trench.apply(item, p);
-        Durability.apply(item, p);
+        new BEnchantEffects().addEffect(player);
+        Trench.remove(item,player);
+        Durability.remove(item,player);
+    }
+    public static void addEnchantment (List<String> loreList, ItemStack item, Player player, int i) {
+        loreList.set(i,ANCIENT_POWER_ACTIVE);
+        ItemMeta meta = item.getItemMeta();
+        meta.setLore(loreList);
+        item.setItemMeta(meta);
+        new BEnchantEffects().removeEffect(player);
+        Trench.apply(item, player);
+        Durability.apply(item, player);
     }
 
 

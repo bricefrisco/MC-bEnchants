@@ -36,7 +36,7 @@ public class PlayerCommands implements CommandExecutor{
             }
             if (!(Toggle.isImbued(Toggle.loreList(player)))) {
 
-                //TODO:Fix message sending twice after confirmation
+
                 if (!player.hasCooldown(coolDown)) {
                     player.sendMessage(ChatColor.GREEN + "Are you sure you want to imbue this tool for $1,000,000?");
                     player.sendMessage(ChatColor.GREEN + "Retype the command to confirm");
@@ -52,8 +52,8 @@ public class PlayerCommands implements CommandExecutor{
                         //then either "deactivates" or "activates"
                         if (loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_RED) || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_YELLOW)
                                 || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_BLUE)) {
-                            Toggle.removeEnchantment(item, player, i);
-                            Toggle.addEnchantment(item, player, i);
+                            Toggle.removeEnchantment(loreList, item, player, i);
+                            Toggle.addEnchantment(loreList, item, player, i);
                             return true;
                         }
                     } return false;
