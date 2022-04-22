@@ -24,6 +24,7 @@ public class Trench implements Listener {
     public static final Set<Material> ALLOWED_ITEMS = new HashSet<>();
     public static final Set<Material> ENCHANTABLE_ITEMS = new HashSet<>();
     public static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
+    public static final Material pick = Material.DIAMOND_PICKAXE;
 
     public Trench() {
         loadConfig();
@@ -39,27 +40,29 @@ public class Trench implements Listener {
         Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
 //*****************Proposed new check, removes nbtapi dependency*********************************
-        if (!ItemInfo.isTitanTool(item,player)) return;
-        if (!ItemInfo.isActive(item,player)) return;
+        if (!ItemInfo.isTitanTool(item)) return;
+        if (!ItemInfo.isActive(item)) return;
+        if (item.getType() == pick) {
+
 //*****************Proposed new check, removes nbtapi dependency*********************************
 
-        //if (!hasTrench(item)) return;
+            //if (!hasTrench(item)) return;
 
-        for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
-            if (block.getLocation().equals(event.getBlock().getLocation())) {
-                player.sendMessage(player.getLocation() + " Inside of trench block break event!");
-                continue;
-            }
+            for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
+                if (block.getLocation().equals(event.getBlock().getLocation())) {
+                    continue;
+                }
 
-            if (ALLOWED_ITEMS.contains(block.getType())) {
-                IGNORE_LOCATIONS.add(block.getLocation());
-                BlockBreakEvent e = new BlockBreakEvent(block, event.getPlayer());
-                Bukkit.getPluginManager().callEvent(e);
-                if (!e.isCancelled()) {
-                    if (!hasSilkTouch(item)) {
-                        dropExperience(block);
+                if (ALLOWED_ITEMS.contains(block.getType())) {
+                    IGNORE_LOCATIONS.add(block.getLocation());
+                    BlockBreakEvent e = new BlockBreakEvent(block, event.getPlayer());
+                    Bukkit.getPluginManager().callEvent(e);
+                    if (!e.isCancelled()) {
+                        if (!hasSilkTouch(item)) {
+                            dropExperience(block);
+                        }
+                        block.breakNaturally(item);
                     }
-                    block.breakNaturally(item);
                 }
             }
         }

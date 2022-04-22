@@ -1,8 +1,8 @@
 package com.bfrisco.benchants.commands;
 
+import com.bfrisco.benchants.utils.BEnchantEffects;
 import com.bfrisco.benchants.utils.ItemInfo;
 import com.bfrisco.benchants.utils.Toggle;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -22,8 +22,8 @@ public class PlayerCommands implements CommandExecutor{
         if (!(sender instanceof Player player)) return false;
         player.sendMessage(ChatColor.RED + "------Debug------");
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (!ItemInfo.isTitanTool(item,player)) return false;
-        if (ItemInfo.loreList(item,player) == null) return false;
+        if (!ItemInfo.isTitanTool(item)) return false;
+        //if (ItemInfo.loreList(item,player) == null) return false;
         if (!player.hasPermission("benchants.imbue")) {
             player.sendMessage(ChatColor.RED + "No permission.");
             return false;
@@ -31,8 +31,7 @@ public class PlayerCommands implements CommandExecutor{
 
         Material coolDown = Material.JIGSAW;
         if ("imbue".equalsIgnoreCase(args[0]) ){
-            Bukkit.getServer().getConsoleSender().sendMessage("Successfully inside of imbue command");
-            if (ItemInfo.isImbued(player)) {
+            if (ItemInfo.isImbued(item)) {
                 player.sendMessage(ChatColor.GREEN + "That item is already imbued!");
                 return false;
             }
@@ -42,19 +41,19 @@ public class PlayerCommands implements CommandExecutor{
                 player.setCooldown(coolDown, 200);
                 return false;
             }
-            List<String> loreList = ItemInfo.loreList(item,player);
+            List<String> loreList = item.getItemMeta().getLore();
             if (loreList == null) return false;
-            for (String s : loreList) {
+            for (String lore : loreList) {
                 //detects for any variant of ancient power color in titan tools
                 //then either "deactivates" or "activates"
-                if (s.equalsIgnoreCase(ItemInfo.ANCIENT_RED) || s.equalsIgnoreCase(ItemInfo.ANCIENT_YELLOW)
-                        || s.equalsIgnoreCase(ItemInfo.ANCIENT_BLUE)) {
-                    Toggle.removeEnchantment(item, player);
-                    Toggle.addEnchantment(item, player);
+                if (ItemInfo.UNIMBUED_LORE.contains(lore)) {
+                    Toggle.imbue(item);
+                    new BEnchantEffects().toggleEffect(player);
                     return true;
                 }
             }
             return false;
-        } return true;
+        }
+        return true;
     }
 }

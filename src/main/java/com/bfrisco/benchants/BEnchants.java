@@ -4,10 +4,11 @@ import com.bfrisco.benchants.commands.Commands;
 import com.bfrisco.benchants.commands.PlayerCommands;
 
 import com.bfrisco.benchants.enchants.Durability;
+import com.bfrisco.benchants.enchants.Fishing;
 import com.bfrisco.benchants.enchants.Trench;
 import com.bfrisco.benchants.utils.Toggle;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,10 +31,11 @@ public class BEnchants extends JavaPlugin {
     public void onEnable() {
         this.getConfig().options().copyDefaults();
         saveDefaultConfig();
-        Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "ITS WORKINGGG ITTTS WOOOORKINNNGGG");
+        Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "bEnchants  E N A B L E D  with emphasis!!!!!!");
         Bukkit.getPluginManager().registerEvents(new Trench(), this);
         Bukkit.getPluginManager().registerEvents(new Durability(), this);
         Bukkit.getPluginManager().registerEvents(new Toggle(), this);
+        Bukkit.getPluginManager().registerEvents(new Fishing(),this);
 
         Objects.requireNonNull(getCommand("benchants")).setExecutor(new Commands());
         Objects.requireNonNull(getCommand("ancient")).setExecutor(new PlayerCommands());
