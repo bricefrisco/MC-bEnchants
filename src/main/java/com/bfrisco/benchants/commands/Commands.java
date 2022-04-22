@@ -3,6 +3,7 @@ package com.bfrisco.benchants.commands;
 import com.bfrisco.benchants.BEnchants;
 import com.bfrisco.benchants.enchants.Durability;
 import com.bfrisco.benchants.enchants.Trench;
+import com.bfrisco.benchants.utils.ItemInfo;
 import com.bfrisco.benchants.utils.Toggle;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -18,7 +19,7 @@ public class Commands implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!(sender instanceof Player player)) return false;
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (!Toggle.isTitanTool(item,player)) {
+        if (!ItemInfo.isTitanTool(item,player)) {
             player.sendMessage(ChatColor.RED + "You must be holding a Titan Tool!");
             return false;
         }

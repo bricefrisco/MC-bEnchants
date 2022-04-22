@@ -1,6 +1,7 @@
 package com.bfrisco.benchants.enchants;
 
 import com.bfrisco.benchants.BEnchants;
+import com.bfrisco.benchants.utils.ItemInfo;
 import com.bfrisco.benchants.utils.Toggle;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.ChatColor;
@@ -30,8 +31,8 @@ public class Durability implements Listener {
         Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
 //*****************Proposed new check, removes nbtapi dependency*********************************
-        if (!Toggle.isTitanTool(item,player)) return;
-        if (!Toggle.isActive(item,player)) return;
+        if (!ItemInfo.isTitanTool(item,player)) return;
+        if (!ItemInfo.isActive(item,player)) return;
 //*****************Proposed new check, removes nbtapi dependency*********************************
 
        //if (!hasDurability(event.getItem())) return;

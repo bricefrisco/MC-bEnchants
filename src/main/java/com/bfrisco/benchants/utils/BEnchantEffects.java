@@ -11,7 +11,6 @@ public class BEnchantEffects {
         player.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,player.getEyeLocation(),100);
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE,10, 1);
 
-
     }
 
     public void removeEffect(Player player) {

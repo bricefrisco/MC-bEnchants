@@ -1,5 +1,6 @@
 package com.bfrisco.benchants.commands;
 
+import com.bfrisco.benchants.utils.ItemInfo;
 import com.bfrisco.benchants.utils.Toggle;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,8 +22,8 @@ public class PlayerCommands implements CommandExecutor{
         if (!(sender instanceof Player player)) return false;
         player.sendMessage(ChatColor.RED + "------Debug------");
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (!Toggle.isTitanTool(item,player)) return false;
-        if (Toggle.loreList(item,player) == null) return false;
+        if (!ItemInfo.isTitanTool(item,player)) return false;
+        if (ItemInfo.loreList(item,player) == null) return false;
         if (!player.hasPermission("benchants.imbue")) {
             player.sendMessage(ChatColor.RED + "No permission.");
             return false;
@@ -31,7 +32,7 @@ public class PlayerCommands implements CommandExecutor{
         Material coolDown = Material.JIGSAW;
         if ("imbue".equalsIgnoreCase(args[0]) ){
             Bukkit.getServer().getConsoleSender().sendMessage("Successfully inside of imbue command");
-            if (Toggle.isImbued(player)) {
+            if (ItemInfo.isImbued(player)) {
                 player.sendMessage(ChatColor.GREEN + "That item is already imbued!");
                 return false;
             }
@@ -41,18 +42,19 @@ public class PlayerCommands implements CommandExecutor{
                 player.setCooldown(coolDown, 200);
                 return false;
             }
-            List<String> loreList = Toggle.loreList(item,player);
+            List<String> loreList = ItemInfo.loreList(item,player);
             if (loreList == null) return false;
-            for (int i = 0; i < loreList.size(); i++) {
+            for (String s : loreList) {
                 //detects for any variant of ancient power color in titan tools
                 //then either "deactivates" or "activates"
-                if (loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_RED) || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_YELLOW)
-                        || loreList.get(i).equalsIgnoreCase(Toggle.ANCIENT_BLUE)) {
+                if (s.equalsIgnoreCase(ItemInfo.ANCIENT_RED) || s.equalsIgnoreCase(ItemInfo.ANCIENT_YELLOW)
+                        || s.equalsIgnoreCase(ItemInfo.ANCIENT_BLUE)) {
                     Toggle.removeEnchantment(item, player);
                     Toggle.addEnchantment(item, player);
                     return true;
                 }
-            } return false;
+            }
+            return false;
         } return true;
     }
 }
