@@ -33,8 +33,7 @@ public class ItemInfo {
 
         if (loreList == null || !item.hasItemMeta()) return false;
         for (String lore : loreList) {
-            //detects for any variant of ancient power color in titan tools
-            //then returns true if any exist
+
             if (ItemInfo.UNIMBUED_LORE.contains(lore)) {
                 return true;
             } else if (ItemInfo.IMBUED_LORE.contains(lore)) {
@@ -43,15 +42,6 @@ public class ItemInfo {
         }
         return false;
     }
-/*    public static List<String> loreList(ItemStack item){
-
-        ItemMeta meta = item.getItemMeta();
-        List<String> loreList = meta.getLore();
-        if (loreList == null) {
-            return null;
-        }
-        return loreList;
-    }*/
 
     public static boolean isActive(ItemStack item){
 

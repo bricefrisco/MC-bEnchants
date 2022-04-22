@@ -18,19 +18,20 @@ public class PlayerCommands implements CommandExecutor{
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 
-        if (args.length == 0) return false;
-        if (!(sender instanceof Player player)) return false;
-        player.sendMessage(ChatColor.RED + "------Debug------");
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (!ItemInfo.isTitanTool(item)) return false;
-        //if (ItemInfo.loreList(item,player) == null) return false;
-        if (!player.hasPermission("benchants.imbue")) {
-            player.sendMessage(ChatColor.RED + "No permission.");
-            return false;
-        }
+
 
         Material coolDown = Material.JIGSAW;
         if ("imbue".equalsIgnoreCase(args[0]) ){
+
+            if (!(sender instanceof Player player)) return false;
+            player.sendMessage(ChatColor.RED + "------Debug------");
+            ItemStack item = player.getInventory().getItemInMainHand();
+            if (!ItemInfo.isTitanTool(item)) return false;
+            //if (ItemInfo.loreList(item,player) == null) return false;
+            if (!player.hasPermission("benchants.imbue")) {
+                player.sendMessage(ChatColor.RED + "No permission.");
+                return false;
+            }
             if (ItemInfo.isImbued(item)) {
                 player.sendMessage(ChatColor.GREEN + "That item is already imbued!");
                 return false;
@@ -48,7 +49,7 @@ public class PlayerCommands implements CommandExecutor{
                 //then either "deactivates" or "activates"
                 if (ItemInfo.UNIMBUED_LORE.contains(lore)) {
                     Toggle.imbue(item);
-                    new BEnchantEffects().toggleEffect(player);
+                    new BEnchantEffects().enableEffect(player);
                     return true;
                 }
             }

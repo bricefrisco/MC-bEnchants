@@ -24,14 +24,13 @@ public class Toggle implements Listener {
         if (!ItemInfo.isImbued(item)) return;
         if (player.hasCooldown(coolDown)) return;
         player.setCooldown(coolDown,25);
-        player.sendMessage("Made it past isImbued check in toggle event");
 
         if (!player.isSneaking()) return; //should reduce the amount of times the interactevent continues to use resources
 
         if (!player.hasPermission("benchants.toggle")) return;
 
         toggleAncientPower(item,player);
-        new BEnchantEffects().toggleEffect(player);
+
     }
 
     public static void toggleAncientPower(ItemStack item, Player player){
@@ -39,10 +38,11 @@ public class Toggle implements Listener {
         if (loreList == null) return;
         if (ItemInfo.isActive(item)) {
             disableAncientPower(item);
-
-        } else
-        enableAncientPower(item);
-
+            new BEnchantEffects().disableEffect(player);
+        } else if (!ItemInfo.isActive(item)) {
+            enableAncientPower(item);
+            new BEnchantEffects().enableEffect(player);
+        }
     }
 
     public static void imbue(ItemStack item){
