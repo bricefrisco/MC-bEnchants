@@ -1,6 +1,7 @@
 package com.bfrisco.benchants.enchants;
 
 import com.bfrisco.benchants.BEnchants;
+import com.bfrisco.benchants.utils.Toggle;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,7 +26,16 @@ public class Durability implements Listener {
     @EventHandler
     @SuppressWarnings("unused")
     public void onPlayerItemDamageEvent(PlayerItemDamageEvent event) {
-        if (!hasDurability(event.getItem())) return;
+
+        Player player = event.getPlayer();
+        ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
+//*****************Proposed new check, removes nbtapi dependency*********************************
+        if (!Toggle.isTitanTool(item,player)) return;
+        if (!Toggle.isActive(item,player)) return;
+//*****************Proposed new check, removes nbtapi dependency*********************************
+
+       //if (!hasDurability(event.getItem())) return;
+
         event.setCancelled(Boolean.TRUE);
     }
 
@@ -40,7 +50,7 @@ public class Durability implements Listener {
             return;
         }
 
-        BEnchants.LOGGER.info(player + " enchanted item with durability...");
+        BEnchants.LOGGER.info(player.getName() + " enchanted item with durability...");
         NBTItem nbti = new NBTItem(item);
         nbti.setBoolean("durability", Boolean.TRUE);
         nbti.applyNBT(item);

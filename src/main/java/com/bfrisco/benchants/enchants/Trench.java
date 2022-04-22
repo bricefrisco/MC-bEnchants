@@ -38,9 +38,8 @@ public class Trench implements Listener {
         Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
 //*****************Proposed new check, removes nbtapi dependency*********************************
-        if (!item.hasItemMeta()) return;
-        if (!(Toggle.isTitanTool(player,Toggle.loreList(player)))) return;
-        if (!Toggle.isActive(Toggle.loreList(player),player)) return;
+        if (!Toggle.isTitanTool(item,player)) return;
+        if (!Toggle.isActive(item,player)) return;
 //*****************Proposed new check, removes nbtapi dependency*********************************
 
         //if (!hasTrench(item)) return;
@@ -78,10 +77,10 @@ public class Trench implements Listener {
             return;
         }
 
-        BEnchants.LOGGER.info(player + " has enchanted item with trench...");
-        NBTItem nbti = new NBTItem(item);
+        BEnchants.LOGGER.info(player.getName() + " has enchanted item with trench...");
+        /*NBTItem nbti = new NBTItem(item);
         nbti.setBoolean("trench", Boolean.TRUE);
-        nbti.applyNBT(item);
+        nbti.applyNBT(item);*/
         player.sendMessage(ChatColor.GREEN + "Successfully enchanted item with Trench.");
     }
 
@@ -92,9 +91,9 @@ public class Trench implements Listener {
         }
 
         BEnchants.LOGGER.info(player + "has removed trench enchantment from item...");
-        NBTItem nbti = new NBTItem(item);
+/*        NBTItem nbti = new NBTItem(item);
         nbti.setBoolean("trench", Boolean.FALSE);
-        nbti.applyNBT(item);
+        nbti.applyNBT(item);*/
         player.sendMessage(ChatColor.GREEN + "Successfully removed trench enchantment from item.");
     }
 

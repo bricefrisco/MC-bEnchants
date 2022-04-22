@@ -9,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Toggle implements Listener {
@@ -18,64 +20,84 @@ public class Toggle implements Listener {
     public static final String ANCIENT_BLUE = "§8Ancient Power§x§6§D§5§E§F§F ♆";
     public static final String ANCIENT_RED = "§8Ancient Power§x§F§F§0§0§0§0 ♆";
     public static final String ANCIENT_YELLOW = "§8Ancient Power§x§F§F§E§C§2§7 ♆";
+    private static final List<String> IMBUED_LORE = new ArrayList<>(){
+        {
+            add(ANCIENT_POWER_ACTIVE);
+            add(ANCIENT_POWER_INACTIVE);
+        }
+    };
+    private static final List<String> UNIMBUED_LORE = new ArrayList<>(){
+        {
+            add(ANCIENT_RED);
+            add(ANCIENT_YELLOW);
+            add(ANCIENT_BLUE);
+        }
+    };
 
     @EventHandler
     public static void activateClick(PlayerInteractEvent event) {
 
         Player player = event.getPlayer();
+        if (!event.getAction().isRightClick()) return; //should reduce the amount of times the interactevent continues to use resources
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (!isTitanTool(item,player)) return;
+        if (!player.isSneaking()) return; //should reduce the amount of times the interactevent continues to use resources
         Material coolDown = Material.JIGSAW;
         if (player.hasCooldown(coolDown)) return;
-        if (!player.isSneaking()) return; //should reduce the amount of times the interactevent continues to use resources
-        if (!event.getAction().isRightClick()) return; //should reduce the amount of times the interactevent continues to use resources
 
         player.setCooldown(coolDown,40); //reduces the amount of times this can be spammed
 
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (!(item.hasItemMeta())) return; //return if air or other item without metadata
         player.sendMessage(ChatColor.RED + "------Debug Start------");
-        List<String> loreList = loreList(player);
-        if (!isTitanTool(player,loreList)) return;
+        List<String> loreList = loreList(item,player);
+
         player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to !isImbued(loreList(p) check");
-        if (!isImbued(loreList)){
+        if (!isImbued(player)){
             player.sendMessage(ChatColor.AQUA + "DebugSend: Item is not imbued");
             return;
         }
 
-        if ((player.hasPermission("benchants.toggle"))) {
+        if (!player.hasPermission("benchants.toggle")) {
 
-            player.sendMessage(ChatColor.AQUA + "Dbug1: Passed perm check");
-            player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to isActive(loreList(p)) check");
-            if (isActive(loreList,player)){
-                player.sendMessage(ChatColor.AQUA + "Dbug2: Passed isActive(loreList(p)) test");
-                player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive(p,item,loreList(p)) method");
-                toggleActive(player,item,loreList);
-            } else {
-                player.sendMessage( ChatColor.AQUA + "Dbug3: Did not pass isActive text");
-                player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive method");
-                toggleActive(player,item,loreList);
-            }
+            player.sendMessage("No permission.");
+            return;
         }
+
+        if (isActive(item,player)){
+            player.sendMessage(ChatColor.AQUA + "Dbug2: Passed isActive(loreList(p)) test");
+            player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive(p,item,loreList(p)) method");
+            toggleActive(player,item);
+        } else {
+            player.sendMessage( ChatColor.AQUA + "Dbug3: Did not pass isActive text");
+            player.sendMessage(ChatColor.AQUA + "DebugSend: Sent to toggleActive method");
+            toggleActive(player,item);
+        }
+
     }
 
-    public static List<String> loreList(Player player){
-        ItemStack item = player.getInventory().getItemInMainHand();
+    public static List<String> loreList(ItemStack item,Player player){
+
         ItemMeta meta = item.getItemMeta();
         List<String> loreList = meta.getLore();
+        if (loreList == null) {
+           player.sendMessage("List returned null");
+           return null;
+        }
         player.sendMessage("Dbug5: loreList obtained");
         return loreList;
     }
 
-    public static boolean isTitanTool(Player player,List<String> lorelist){
-        player.sendMessage(ChatColor.YELLOW + "Dbug4: inside isTitanTool Boolean");
-        if (lorelist == null) return false;
-        for (String s : lorelist) {
+    public static boolean isTitanTool(ItemStack item,Player player){
+        item = player.getInventory().getItemInMainHand();
+        if (!(item.hasItemMeta())) return false; //return if air or other item without metadata
+        List<String> loreList = loreList(item,player);
+        if (loreList == null) return false;
+        for (String lore : loreList) {
             //detects for any variant of ancient power color in titan tools
             //then returns true if any exist
-            if (s.equalsIgnoreCase(ANCIENT_RED) || s.equalsIgnoreCase(ANCIENT_YELLOW)
-                    || s.equalsIgnoreCase(ANCIENT_BLUE) || s.equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+            if (UNIMBUED_LORE.contains(lore)) {
                 player.sendMessage("Dbug7: isTitanTool came back true due to red,yellow,blue,active lore detection");
                 return true;
-            } else if (s.equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
+            } else if (IMBUED_LORE.contains(lore)) {
                 player.sendMessage("Dbug8: isTitanTool came back true due to inactive lore detection");
                 return true;
             }
@@ -83,58 +105,57 @@ public class Toggle implements Listener {
         return false;
     }
 
-    public static boolean isActive(List<String> loreList, Player player){
+    public static boolean isActive(ItemStack item, Player player){
 
+
+        List<String> loreList = loreList(item,player);
         for (String s : loreList) {
             //detects if ancient power is active or inactive on a titantool
             if (s.equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
                 player.sendMessage(player.getLocation() + " Ancient power is active!");
                 return true;
-            } else if (s.equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
-                player.sendMessage(player.getLocation() + " Ancient power is not active!");
-                return false;
             }
         } return false;
     }
-    public static boolean isImbued(List<String> loreList) {
-
-        for (String s : loreList) {
+    public static boolean isImbued(Player player) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        List<String> loreList = loreList(item,player);
+        if (loreList == null) return false;
+        for (String lore : loreList) {
             //detects for any variant of ancient power color in titan tools
             //then either "deactivates" or "activates"
-            if (s.equalsIgnoreCase(ANCIENT_RED) || s.equalsIgnoreCase(ANCIENT_YELLOW)
-                    || s.equalsIgnoreCase(ANCIENT_BLUE)) {
+            if (UNIMBUED_LORE.contains(lore)) {
                 return false;
-            } else if (s.equalsIgnoreCase(ANCIENT_POWER_INACTIVE) || s.equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
+            } else if (IMBUED_LORE.contains(lore)) {
                 return true;
             }
         } return false;
     }
-    public static void toggleActive(Player player,ItemStack item,List<String> loreList){
-
-
-        boolean isImbued = false;
-        assert loreList != null;
-        for (int i = 0; i < loreList.size(); i++) {
-            //detects for any variant of ancient power color in titan tools
-            //then either "deactivates" or "activates"
-            if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_ACTIVE)) {
-                removeEnchantment(loreList,item, player, i);
-                isImbued = true;
-            } else if (loreList.get(i).equalsIgnoreCase(ANCIENT_POWER_INACTIVE)) {
-                addEnchantment(loreList, item, player, i);
-                isImbued = true;
-            }
+    public static void toggleActive(Player player,ItemStack item){
+        List<String> loreList = loreList(item,player);
+        if (loreList == null) return;
+        int index = getAncientPowerLoreIndex(loreList);
+        if (isActive(item,player)) {
+            removeEnchantment(item,player);
+            return;
         }
-        if (!(isImbued)) {
-            player.sendMessage(ChatColor.RED + "This tool cannot be activated without being imbued first!");
-        }
+        addEnchantment(item,player);
 
     }
 
-    //TODO: this is a fooking mess idk what to do here
-    public static void removeEnchantment (List<String> loreList, ItemStack item, Player player, int i) {
+    public static Integer getAncientPowerLoreIndex(List<String> loreList) {
 
-        loreList.set(i,ANCIENT_POWER_INACTIVE);
+        for (int i = 0; i < loreList.size(); i++){
+            if (IMBUED_LORE.contains(loreList.get(i)) ||
+                    UNIMBUED_LORE.contains(loreList.get(i))) return i;
+        }
+        return null;
+    }
+
+    public static void removeEnchantment(ItemStack item, Player player) {
+        List<String> loreList = item.getItemMeta().getLore();
+        Integer index = getAncientPowerLoreIndex(loreList);
+        loreList.set(index,ANCIENT_POWER_INACTIVE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
@@ -142,8 +163,10 @@ public class Toggle implements Listener {
     /*    Trench.remove(item,player);
         Durability.remove(item,player);*/
     }
-    public static void addEnchantment (List<String> loreList, ItemStack item, Player player, int i) {
-        loreList.set(i,ANCIENT_POWER_ACTIVE);
+    public static void addEnchantment (ItemStack item, Player player) {
+        List<String> loreList = item.getItemMeta().getLore();
+        Integer index = getAncientPowerLoreIndex(loreList);
+        loreList.set(index,ANCIENT_POWER_ACTIVE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);

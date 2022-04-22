@@ -17,16 +17,16 @@ public class Commands implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!(sender instanceof Player player)) return false;
-        if (!(Toggle.isTitanTool((Player) sender,Toggle.loreList((Player)sender)))) return false;
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (!Toggle.isTitanTool(item,player)) {
+            player.sendMessage(ChatColor.RED + "You must be holding a Titan Tool!");
+            return false;
+        }
         if (!player.hasPermission("benchants.enchant")) {
             player.sendMessage(ChatColor.RED + "No permission.");
             return true;
         }
-
         if (args.length == 0) return false;
-
-        ItemStack item = player.getInventory().getItemInMainHand();
-
         if ("reload".equalsIgnoreCase(args[0])) {
             BEnchants.LOGGER.info("Reloading config...");
             BEnchants.PLUGIN.reloadConfig();
