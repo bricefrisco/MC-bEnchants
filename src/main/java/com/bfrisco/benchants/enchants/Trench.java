@@ -33,21 +33,15 @@ public class Trench implements Listener {
     @EventHandler
     @SuppressWarnings("unused")
     public void onBlockBreakEvent(BlockBreakEvent event) {
-       if (IGNORE_LOCATIONS.contains(event.getBlock().getLocation())) {
+        if (IGNORE_LOCATIONS.contains(event.getBlock().getLocation())) {
             IGNORE_LOCATIONS.remove(event.getBlock().getLocation());
             return;
         }
         Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
-//*****************Proposed new check, removes nbtapi dependency*********************************
         if (!ItemInfo.isTitanTool(item)) return;
         if (!ItemInfo.isActive(item)) return;
         if (item.getType() == pick) {
-
-//*****************Proposed new check, removes nbtapi dependency*********************************
-
-            //if (!hasTrench(item)) return;
-
             for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
                 if (block.getLocation().equals(event.getBlock().getLocation())) {
                     continue;
@@ -67,7 +61,6 @@ public class Trench implements Listener {
             }
         }
     }
-
 
 
     public static void apply(ItemStack item, Player player) {

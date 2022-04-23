@@ -19,6 +19,7 @@ public class ItemInfo {
         add(ANCIENT_POWER_INACTIVE);
         }
     };
+
     public static final List<String> UNIMBUED_LORE = new ArrayList<>(){
         {
         add(ANCIENT_RED);
@@ -28,10 +29,9 @@ public class ItemInfo {
     };
 
     public static boolean isTitanTool(ItemStack item){
-
+        if (!item.hasItemMeta()) return false;
         List<String> loreList = item.getItemMeta().getLore();
-
-        if (loreList == null || !item.hasItemMeta()) return false;
+        if (loreList == null) return false;
         for (String lore : loreList) {
 
             if (ItemInfo.UNIMBUED_LORE.contains(lore)) {
@@ -65,6 +65,7 @@ public class ItemInfo {
         }
         return false;
     }
+
     public static Integer getAncientPowerLoreIndex(List<String> loreList) {
 
         for (int i = 0; i < loreList.size(); i++){

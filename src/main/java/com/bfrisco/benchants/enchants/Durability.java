@@ -30,13 +30,8 @@ public class Durability implements Listener {
 
         Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
-//*****************Proposed new check, removes nbtapi dependency*********************************
         if (!ItemInfo.isTitanTool(item)) return;
         if (!ItemInfo.isActive(item)) return;
-//*****************Proposed new check, removes nbtapi dependency*********************************
-
-       //if (!hasDurability(event.getItem())) return;
-
         event.setCancelled(Boolean.TRUE);
     }
 

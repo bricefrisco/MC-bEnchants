@@ -18,16 +18,12 @@ public class PlayerCommands implements CommandExecutor{
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 
-
-
-        Material coolDown = Material.JIGSAW;
         if ("imbue".equalsIgnoreCase(args[0]) ){
-
+            Material coolDown = Material.JIGSAW;
             if (!(sender instanceof Player player)) return false;
             player.sendMessage(ChatColor.RED + "------Debug------");
             ItemStack item = player.getInventory().getItemInMainHand();
             if (!ItemInfo.isTitanTool(item)) return false;
-            //if (ItemInfo.loreList(item,player) == null) return false;
             if (!player.hasPermission("benchants.imbue")) {
                 player.sendMessage(ChatColor.RED + "No permission.");
                 return false;
@@ -45,8 +41,6 @@ public class PlayerCommands implements CommandExecutor{
             List<String> loreList = item.getItemMeta().getLore();
             if (loreList == null) return false;
             for (String lore : loreList) {
-                //detects for any variant of ancient power color in titan tools
-                //then either "deactivates" or "activates"
                 if (ItemInfo.UNIMBUED_LORE.contains(lore)) {
                     Toggle.imbue(item);
                     new BEnchantEffects().enableEffect(player);

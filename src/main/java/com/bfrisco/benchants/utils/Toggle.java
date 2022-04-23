@@ -11,26 +11,20 @@ import java.util.List;
 
 public class Toggle implements Listener {
 
-
-
     @EventHandler
     public static void activateClick(PlayerInteractEvent event) {
-
         Player player = event.getPlayer();
         Material coolDown = Material.JIGSAW;
-        if (!event.getAction().isRightClick()) return; //should reduce the amount of times the interactevent continues to use resources
+        if (!event.getAction().isRightClick()) return;
         ItemStack item = player.getInventory().getItemInMainHand();
+        if (!item.hasItemMeta()) return;
         if (!ItemInfo.isTitanTool(item)) return;
         if (!ItemInfo.isImbued(item)) return;
         if (player.hasCooldown(coolDown)) return;
         player.setCooldown(coolDown,25);
-
-        if (!player.isSneaking()) return; //should reduce the amount of times the interactevent continues to use resources
-
+        if (!player.isSneaking()) return;
         if (!player.hasPermission("benchants.toggle")) return;
-
         toggleAncientPower(item,player);
-
     }
 
     public static void toggleAncientPower(ItemStack item, Player player){
@@ -52,8 +46,8 @@ public class Toggle implements Listener {
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
-
     }
+
     public static void enableAncientPower(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
@@ -61,8 +55,8 @@ public class Toggle implements Listener {
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
-
     }
+
     public static void disableAncientPower(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
@@ -70,8 +64,6 @@ public class Toggle implements Listener {
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
-
     }
-
 
 }
