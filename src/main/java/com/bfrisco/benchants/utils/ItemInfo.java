@@ -29,6 +29,7 @@ public class ItemInfo {
     };
 
     public static boolean isTitanTool(ItemStack item){
+        if (item == null) return false;
         if (!item.hasItemMeta()) return false;
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;

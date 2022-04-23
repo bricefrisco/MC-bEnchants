@@ -6,6 +6,7 @@ import com.bfrisco.benchants.commands.PlayerCommands;
 import com.bfrisco.benchants.enchants.Durability;
 import com.bfrisco.benchants.enchants.Fishing;
 import com.bfrisco.benchants.enchants.Trench;
+import com.bfrisco.benchants.utils.Charge;
 import com.bfrisco.benchants.utils.Toggle;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -36,6 +37,7 @@ public class BEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Durability(), this);
         Bukkit.getPluginManager().registerEvents(new Toggle(), this);
         Bukkit.getPluginManager().registerEvents(new Fishing(),this);
+        Bukkit.getPluginManager().registerEvents(new Charge(),this);
 
         Objects.requireNonNull(getCommand("benchants")).setExecutor(new Commands());
         Objects.requireNonNull(getCommand("ancient")).setExecutor(new PlayerCommands());

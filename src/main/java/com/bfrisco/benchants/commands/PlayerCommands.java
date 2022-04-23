@@ -1,5 +1,6 @@
 package com.bfrisco.benchants.commands;
 
+import com.bfrisco.benchants.BEnchants;
 import com.bfrisco.benchants.utils.BEnchantEffects;
 import com.bfrisco.benchants.utils.ItemInfo;
 import com.bfrisco.benchants.utils.Toggle;
@@ -44,6 +45,7 @@ public class PlayerCommands implements CommandExecutor{
                 if (ItemInfo.UNIMBUED_LORE.contains(lore)) {
                     Toggle.imbue(item);
                     new BEnchantEffects().enableEffect(player);
+                    BEnchants.LOGGER.info(player.getName() + " has imbued a titan tool...");
                     return true;
                 }
             }
