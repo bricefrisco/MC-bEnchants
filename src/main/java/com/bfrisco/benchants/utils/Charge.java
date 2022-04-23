@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Charge implements Listener {
 
-    public static final String ANCIENT_CHARGE = "§x§F§F§0§0§4§CAncient Charge ♆";
+
 
 
     //PLEASE EXCUSE THE MESS, I AM BUILDING STILL LOL
@@ -31,62 +31,46 @@ public class Charge implements Listener {
 
 
         if (event.isLeftClick()) {
-            Player player = (Player) event.getWhoClicked();
-            ItemStack ancientFragement = player.getItemOnCursor();
-            if (!ItemInfo.isTitanTool(event.getCurrentItem())) return;
-            if (!isAncientFragment(ancientFragement)) return;
-            player.sendMessage("Slot slot: " + event.getSlot());
-            player.sendMessage("Slot slot type: " + event.getSlotType());
-            Inventory inv = player.getInventory();
-            Material charge = Material.FIRE_CHARGE;
-            int taken = 0;
-            addChargeLore(event.getCurrentItem(),ancientFragement.getAmount());
 
-            player.sendMessage("Amount in hand: " + ancientFragement.getAmount());
+            Player player = (Player) event.getWhoClicked();
+            ItemStack itemOnCursor = player.getItemOnCursor();
+            ItemStack itemClicked = event.getCurrentItem();
+            Integer numberOfCharge = itemOnCursor.getAmount();
+            if (!ItemInfo.isAncientFragment(itemOnCursor)) return;
+            if (event.getCurrentItem() == null) return;
+            if (!ItemInfo.isTitanTool(itemClicked)) return;
+            //player.sendMessage("itemOnCursor " + itemOnCursor);
+            //player.sendMessage("Slot slot: " + event.getSlot());
+            //player.sendMessage("Slot slot type: " + event.getSlotType());
+            //player.sendMessage("Amount in hand: " + itemOnCursor.getAmount());
+            addChargeLore(itemClicked,numberOfCharge);
             player.getItemOnCursor().setAmount(0);
             event.setCancelled(true);
-
-            /*if (inv.contains(charge)) {
-                for (int i = 0; i < inv.getSize(); i++) {
-                    ItemStack itemSlot = player.getInventory().getItem(i);
-                    if (itemSlot != null && itemSlot.getType().equals(charge)) {
-
-                        int amount = itemSlot.getAmount();
-                        int remainder = amount;
-                        itemSlot.setAmount(remainder);
-                        player.getInventory().setItem(i, remainder > 0 ? itemSlot: null);
-                        player.updateInventory();
-                        i = inv.getSize();
-                        player.sendMessage(ChatColor.LIGHT_PURPLE + "Amount left in stack taken from: "
-                                + ChatColor.YELLOW + remainder );
-                    }
-                }
-
-            }*/
         }
 
     }
-
-    public static boolean isAncientFragment(ItemStack item){
-        if (!item.hasItemMeta()) return false;
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return false;
-        for (String lore : loreList) {
-
-            if (ANCIENT_CHARGE.contains(lore)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 
     public static void addChargeLore(ItemStack item, Integer amount){
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         Integer chargeIndex = index + 1;
-        loreList.set(chargeIndex,ANCIENT_CHARGE + " : " + amount);
+
+        if (ItemInfo.hasCharge(item)) {
+            Bukkit.getServer().getConsoleSender().sendMessage("Inside addChargeLore passed hasCharge test");
+            String string = loreList.get(chargeIndex);
+            String string1 = string.substring(30);
+            int previousCharge = Integer.parseInt(string1);
+            int newCharge = previousCharge + amount;
+            Bukkit.getServer().getConsoleSender().sendMessage(String.valueOf(amount));
+            Bukkit.getServer().getConsoleSender().sendMessage(String.valueOf(previousCharge));
+            Bukkit.getServer().getConsoleSender().sendMessage(String.valueOf(newCharge));
+            loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + ": " + newCharge);
+            ItemMeta meta = item.getItemMeta();
+            meta.setLore(loreList);
+            item.setItemMeta(meta);
+            return;
+        } else
+        loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + ": " + amount);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);

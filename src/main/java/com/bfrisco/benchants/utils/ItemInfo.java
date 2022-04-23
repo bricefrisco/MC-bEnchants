@@ -1,5 +1,7 @@
 package com.bfrisco.benchants.utils;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ public class ItemInfo {
     public static final String ANCIENT_BLUE = "§8Ancient Power§x§6§D§5§E§F§F ♆";
     public static final String ANCIENT_RED = "§8Ancient Power§x§F§F§0§0§0§0 ♆";
     public static final String ANCIENT_YELLOW = "§8Ancient Power§x§F§F§E§C§2§7 ♆";
+    public static final String ANCIENT_CHARGE = "§x§F§F§0§0§4§CAncient Charge";
 
     public static final List<String> IMBUED_LORE = new ArrayList<>(){
         {
@@ -29,7 +32,6 @@ public class ItemInfo {
     };
 
     public static boolean isTitanTool(ItemStack item){
-        if (item == null) return false;
         if (!item.hasItemMeta()) return false;
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
@@ -61,6 +63,37 @@ public class ItemInfo {
         if (loreList == null) return false;
         for (String lore : loreList) {
             if (ItemInfo.IMBUED_LORE.contains(lore)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isAncientFragment(ItemStack item){
+        if (!item.hasItemMeta()) return false;
+        List<String> loreList = item.getItemMeta().getLore();
+        if (loreList == null) return false;
+        Material type = item.getType();
+        Material fireCharge = Material.FIRE_CHARGE;
+        for (String lore : loreList) {
+            if (ANCIENT_CHARGE.contains(lore) && (type == fireCharge)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean hasCharge(ItemStack item){
+        Bukkit.getServer().getConsoleSender().sendMessage("Inside hasCharge method");
+        if (!item.hasItemMeta()) return false;
+        Bukkit.getServer().getConsoleSender().sendMessage("" + item.getItemMeta());
+        List<String> loreList = item.getItemMeta().getLore();
+        if (loreList == null) return false;
+        Material type = item.getType();
+        Material fireCharge = Material.FIRE_CHARGE;
+        for (String lore : loreList) {
+            Bukkit.getServer().getConsoleSender().sendMessage("inside for loop");
+            if (lore.matches("(.*)" + ANCIENT_CHARGE + "(.*)") && (type != fireCharge)) {
+                Bukkit.getServer().getConsoleSender().sendMessage("passed if test inside hasCharge Method");
                 return true;
             }
         }
