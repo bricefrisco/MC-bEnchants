@@ -33,6 +33,7 @@ public class Toggle implements Listener {
         if (ItemInfo.isActive(item)) {
             disableAncientPower(item);
             new BEnchantEffects().disableEffect(player);
+
         } else if (!ItemInfo.isActive(item)) {
             enableAncientPower(item);
             new BEnchantEffects().enableEffect(player);

@@ -4,7 +4,7 @@ version: 1
 # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 
 trench:
-  enchantable-items: ["DIAMOND_PICKAXE", "NETHERITE_PICKAXE"]
+  enchantable-items: ["DIAMOND_PICKAXE", "NETHERITE_PICKAXE","DIAMOND_SHOVEL", "NETHERITE_SHOVEL"]
   destroyable-items:
     [
       "COBBLESTONE", "STONE", "ANDESITE", "DIORITE", "GRANITE", "GRAVEL", "DIRT", "SANDSTONE", "RED_SANDSTONE",
@@ -17,7 +17,7 @@ trench:
       "DEEPSLATE_COAL_ORE", "DEEPSLATE_IRON_ORE", "DEEPSLATE_COPPER_ORE", "DEEPSLATE_GOLD_ORE",
       "DEEPSLATE_REDSTONE_ORE", "DEEPSLATE_EMERALD_ORE", "DEEPSLATE_DIAMOND_ORE", "SMOOTH_BASALT", "CALCITE",
       "AMETHYST_BLOCK", "DEEPSLATE", "CRYING_OBSIDIAN", "OBSIDIAN", "MAGMA_BLOCK", "NETHER_GOLD_ORE",
-      "GOLD_ORE"
+      "GOLD_ORE", "GRASS_BLOCK"
     ]
 
 durability:

@@ -18,4 +18,12 @@ public class BEnchantEffects {
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE,10, 1);
 
     }
+
+    public void depletedChargeEffect(Player player) {
+
+        player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, player.getEyeLocation(), 100);
+        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 10, 1);
+
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.bfrisco.benchants.enchants;
 
 import com.bfrisco.benchants.BEnchants;
+import com.bfrisco.benchants.utils.ChargeManagement;
 import com.bfrisco.benchants.utils.ItemInfo;
 import com.bfrisco.benchants.utils.Toggle;
 import de.tr7zw.nbtapi.NBTItem;
@@ -17,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -40,7 +42,17 @@ public class Trench implements Listener {
         Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
         if (!ItemInfo.isTitanTool(item)) return;
-        if (!ItemInfo.isActive(item)) return;
+        Bukkit.getServer().getConsoleSender().sendMessage("Is a titantool " + ItemInfo.isTitanTool(item));
+        Bukkit.getServer().getConsoleSender().sendMessage("Is active " + ItemInfo.isActive(item));
+        Bukkit.getServer().getConsoleSender().sendMessage("Is activeCharge " + ItemInfo.isActiveCharge(item));
+        Bukkit.getServer().getConsoleSender().sendMessage("Is hasCharge " + ItemInfo.hasCharge(item));
+
+        if (!ItemInfo.isActive(item) && !ItemInfo.isActiveCharge(item)) return;
+
+        ChargeManagement.decreaseChargeLore(item,player);
+
+
+
         if (item.getType() == pick) {
             for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
                 if (block.getLocation().equals(event.getBlock().getLocation())) {
@@ -61,6 +73,7 @@ public class Trench implements Listener {
             }
         }
     }
+
 
 
     public static void apply(ItemStack item, Player player) {
