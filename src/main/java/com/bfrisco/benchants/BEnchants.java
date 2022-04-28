@@ -5,6 +5,7 @@ import com.bfrisco.benchants.commands.PlayerCommands;
 
 import com.bfrisco.benchants.enchants.Durability;
 import com.bfrisco.benchants.enchants.Fishing;
+import com.bfrisco.benchants.enchants.Tree;
 import com.bfrisco.benchants.enchants.Trench;
 import com.bfrisco.benchants.utils.ChargeManagement;
 import com.bfrisco.benchants.utils.Toggle;
@@ -28,12 +29,17 @@ public class BEnchants extends JavaPlugin {
         CONFIG = getConfig();
     }
 
+    public static BEnchants getInstance() {
+        return getPlugin(BEnchants.class);
+    }
+
     @Override
     public void onEnable() {
         this.getConfig().options().copyDefaults();
         saveDefaultConfig();
         Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "bEnchants  E N A B L E D  with emphasis!!!!!!");
         Bukkit.getPluginManager().registerEvents(new Trench(), this);
+        Bukkit.getPluginManager().registerEvents(new Tree(), this);
         Bukkit.getPluginManager().registerEvents(new Durability(), this);
         Bukkit.getPluginManager().registerEvents(new Toggle(), this);
         Bukkit.getPluginManager().registerEvents(new Fishing(),this);

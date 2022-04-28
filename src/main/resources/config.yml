@@ -19,6 +19,12 @@ trench:
       "AMETHYST_BLOCK", "DEEPSLATE", "CRYING_OBSIDIAN", "OBSIDIAN", "MAGMA_BLOCK", "NETHER_GOLD_ORE",
       "GOLD_ORE", "GRASS_BLOCK"
     ]
+tree:
+  enchantable-items: ["DIAMOND_AXE", "NETHERITE_AXE"]
+  destroyable-items:
+    [
+      "OAK_LOG", "SPRUCE_LOG", "BIRCH_LOG", "DARK_OAK_LOG", "OAK_LEAVES", "BIRCH_LEAVES", "DARK_OAK_LEAVES"
+    ]
 
 durability:
   enchantable-items: ["DIAMOND_PICKAXE", "NETHERITE_PICKAXE", "DIAMOND_SHOVEL", "NETHERITE_SHOVEL"]

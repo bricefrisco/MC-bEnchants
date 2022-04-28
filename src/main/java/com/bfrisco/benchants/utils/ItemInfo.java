@@ -109,22 +109,27 @@ public class ItemInfo {
         return false;
     }
 
-    public static boolean isAncientFragment(ItemStack item) {
+    public static boolean isPowerCrystal(ItemStack item) {
         if (!item.hasItemMeta()) return false;
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
         Material type = item.getType();
         Material powerCrystal = Material.AMETHYST_SHARD;
-        for (String lore : loreList) {
+  /*      for (String lore : loreList) {
             if (POWER_CRYSTAL.equalsIgnoreCase(lore) && (type == powerCrystal)) {
                 return true;
             }
-        }
+        }*/
+        Bukkit.getServer().getConsoleSender().sendMessage("inside isPowerCrystal");
+        if (loreList.stream().anyMatch(lore -> lore.matches(POWER_CRYSTAL) && (type == powerCrystal))){
+            Bukkit.getServer().getConsoleSender().sendMessage("passed isPowerCrystal check");
+            return true;
+        };
+
         return false;
+
+
     }
-    /*    Bukkit.getServer().getConsoleSender().sendMessage("inside isAFrag");
-        return loreList.stream().anyMatch(lore -> lore.matches(ANCIENT_FRAGMENT) && (type == fireCharge));
-    }*/
 
     public static boolean hasCharge(ItemStack item){
         if (!item.hasItemMeta()) return false;

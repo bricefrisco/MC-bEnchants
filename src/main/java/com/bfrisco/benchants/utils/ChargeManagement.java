@@ -26,10 +26,13 @@ public class ChargeManagement implements Listener {
             ItemStack itemOnCursor = player.getItemOnCursor();
             ItemStack itemClicked = event.getCurrentItem();
             Integer numberOfCharge = itemOnCursor.getAmount();
-            if (!ItemInfo.isAncientFragment(itemOnCursor)) return;
+            if (!ItemInfo.isPowerCrystal(itemOnCursor)) return;
+            Bukkit.getServer().getConsoleSender().sendMessage("isPowerCrystal " + ItemInfo.isPowerCrystal(itemOnCursor));
             if (event.getCurrentItem() == null) return;
             if (!ItemInfo.isTitanTool(itemClicked)) return;
+            Bukkit.getServer().getConsoleSender().sendMessage("isTitanTool " + ItemInfo.isTitanTool(itemClicked));
             if (ItemInfo.isImbued(itemClicked)) return;
+            Bukkit.getServer().getConsoleSender().sendMessage("isImbued " + ItemInfo.isImbued(itemClicked));
             addChargeLore(itemClicked,numberOfCharge);
             player.getItemOnCursor().setAmount(0);
             player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
@@ -72,6 +75,7 @@ public class ChargeManagement implements Listener {
             Bukkit.getServer().getConsoleSender().sendMessage("Inside addChargeLore passed hasCharge test");
             String string = loreList.get(chargeIndex);
             String string1 = string.substring(24);
+            player.sendMessage(string1);
             int previousCharge = Integer.parseInt(string1);
             int remainingCharge = previousCharge - 1;
             if (remainingCharge < 1 && ItemInfo.isColor(item).equals("RED")) {

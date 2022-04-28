@@ -46,32 +46,34 @@ public class Trench implements Listener {
         Bukkit.getServer().getConsoleSender().sendMessage("Is active " + ItemInfo.isActive(item));
         Bukkit.getServer().getConsoleSender().sendMessage("Is activeCharge " + ItemInfo.isActiveCharge(item));
         Bukkit.getServer().getConsoleSender().sendMessage("Is hasCharge " + ItemInfo.hasCharge(item));
-
         if (!ItemInfo.isActive(item) && !ItemInfo.isActiveCharge(item)) return;
+        if (item.getType() != pick) return;
+
 
         ChargeManagement.decreaseChargeLore(item,player);
+        player.sendMessage("decreaseing charge");
 
 
 
-        if (item.getType() == pick) {
-            for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
-                if (block.getLocation().equals(event.getBlock().getLocation())) {
-                    continue;
-                }
 
-                if (ALLOWED_ITEMS.contains(block.getType())) {
-                    IGNORE_LOCATIONS.add(block.getLocation());
-                    BlockBreakEvent e = new BlockBreakEvent(block, event.getPlayer());
-                    Bukkit.getPluginManager().callEvent(e);
-                    if (!e.isCancelled()) {
-                        if (!hasSilkTouch(item)) {
-                            dropExperience(block);
-                        }
-                        block.breakNaturally(item);
+        for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
+            if (block.getLocation().equals(event.getBlock().getLocation())) {
+                continue;
+            }
+
+            if (ALLOWED_ITEMS.contains(block.getType())) {
+                IGNORE_LOCATIONS.add(block.getLocation());
+                BlockBreakEvent e = new BlockBreakEvent(block, event.getPlayer());
+                Bukkit.getPluginManager().callEvent(e);
+                if (!e.isCancelled()) {
+                    if (!hasSilkTouch(item)) {
+                        dropExperience(block);
                     }
+                    block.breakNaturally(item);
                 }
             }
         }
+
     }
 
 
