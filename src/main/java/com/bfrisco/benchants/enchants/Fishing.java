@@ -7,15 +7,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 
 
 public class Fishing implements Listener {
@@ -47,30 +44,6 @@ public class Fishing implements Listener {
             player.sendMessage(event.getState().toString());
             player.sendMessage("Succeeded case");
 
-            new BukkitRunnable(){
-                @Override
-                public void run() {
-                    player.getWorld().playSound(player, Sound.BLOCK_NOTE_BLOCK_HARP,10,2);
-                }
-            }.runTaskLater(BEnchants.getInstance(), 5 * 3);
-            new BukkitRunnable(){
-                @Override
-                public void run() {
-                    player.getWorld().playSound(player, Sound.BLOCK_NOTE_BLOCK_HARP,10,1);
-                }
-            }.runTaskLater(BEnchants.getInstance(), 5 * 2);
-            new BukkitRunnable(){
-                @Override
-                public void run() {
-                    player.getWorld().playSound(player, Sound.BLOCK_NOTE_BLOCK_HARP,10,1);
-                }
-            }.runTaskLater(BEnchants.getInstance(), 5 * 1);
-            new BukkitRunnable(){
-                @Override
-                public void run() {
-                    player.getWorld().playSound(player, Sound.BLOCK_NOTE_BLOCK_HARP,10,0);
-                }
-            }.runTaskLater(BEnchants.getInstance(), 5 * 0);
 
             if (event.getCaught().getName().equalsIgnoreCase(TROPICALFISH)) {
                 event.getPlayer().getWorld().dropItem(location, TropicalFish);

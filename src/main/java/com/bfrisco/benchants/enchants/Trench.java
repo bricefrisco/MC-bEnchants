@@ -3,10 +3,7 @@ package com.bfrisco.benchants.enchants;
 import com.bfrisco.benchants.BEnchants;
 import com.bfrisco.benchants.utils.ChargeManagement;
 import com.bfrisco.benchants.utils.ItemInfo;
-import com.bfrisco.benchants.utils.Toggle;
-import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,7 +15,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -35,26 +31,19 @@ public class Trench implements Listener {
     @EventHandler
     @SuppressWarnings("unused")
     public void onBlockBreakEvent(BlockBreakEvent event) {
+
         if (IGNORE_LOCATIONS.contains(event.getBlock().getLocation())) {
             IGNORE_LOCATIONS.remove(event.getBlock().getLocation());
             return;
         }
         Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
-        if (!ItemInfo.isTitanTool(item)) return;
-        Bukkit.getServer().getConsoleSender().sendMessage("Is a titantool " + ItemInfo.isTitanTool(item));
-        Bukkit.getServer().getConsoleSender().sendMessage("Is active " + ItemInfo.isActive(item));
-        Bukkit.getServer().getConsoleSender().sendMessage("Is activeCharge " + ItemInfo.isActiveCharge(item));
-        Bukkit.getServer().getConsoleSender().sendMessage("Is hasCharge " + ItemInfo.hasCharge(item));
-        if (!ItemInfo.isActive(item) && !ItemInfo.isActiveCharge(item)) return;
         if (item.getType() != pick) return;
-
+        if (!ItemInfo.isTitanTool(item)) return;
+        if (!ItemInfo.isActive(item) && !ItemInfo.isActiveCharge(item)) return;
 
         ChargeManagement.decreaseChargeLore(item,player);
-        player.sendMessage("decreaseing charge");
-
-
-
+        player.sendMessage("decreasing charge");
 
         for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
             if (block.getLocation().equals(event.getBlock().getLocation())) {
@@ -73,52 +62,10 @@ public class Trench implements Listener {
                 }
             }
         }
-
-    }
-
-
-
-    public static void apply(ItemStack item, Player player) {
-        if (!ENCHANTABLE_ITEMS.contains(item.getType())) {
-            player.sendMessage(ChatColor.RED + "That item cannot be enchanted with Trench.");
-            return;
-        }
-
-        if (hasTrench(item)) {
-            player.sendMessage(ChatColor.RED + "That item is already enchanted with Trench.");
-            return;
-        }
-
-        BEnchants.LOGGER.info(player.getName() + " has enchanted item with trench...");
-        /*NBTItem nbti = new NBTItem(item);
-        nbti.setBoolean("trench", Boolean.TRUE);
-        nbti.applyNBT(item);*/
-        player.sendMessage(ChatColor.GREEN + "Successfully enchanted item with Trench.");
-    }
-
-    public static void remove(ItemStack item, Player player) {
-        if (!hasTrench(item)) {
-            player.sendMessage(ChatColor.RED + "That item is not enchanted with Trench.");
-            return;
-        }
-
-        BEnchants.LOGGER.info(player + "has removed trench enchantment from item...");
-/*        NBTItem nbti = new NBTItem(item);
-        nbti.setBoolean("trench", Boolean.FALSE);
-        nbti.applyNBT(item);*/
-        player.sendMessage(ChatColor.GREEN + "Successfully removed trench enchantment from item.");
-    }
-
-    public static boolean hasTrench(ItemStack item) {
-        if (!ENCHANTABLE_ITEMS.contains(item.getType())) return false;
-        NBTItem nbti = new NBTItem(item);
-        if (!nbti.hasNBTData()) return false;
-        return nbti.getBoolean("trench");
     }
 
     public static void loadConfig() {
         ENCHANTABLE_ITEMS.clear();
-
         ConfigurationSection trench = BEnchants.PLUGIN.getConfig().getConfigurationSection("trench");
         if (trench == null) {
             BEnchants.LOGGER.warning("Trench configuration not found!");
@@ -182,7 +129,6 @@ public class Trench implements Listener {
                 }
             }
         }
-
         return blocks;
     }
 

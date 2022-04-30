@@ -3,10 +3,7 @@ package com.bfrisco.benchants;
 import com.bfrisco.benchants.commands.Commands;
 import com.bfrisco.benchants.commands.PlayerCommands;
 
-import com.bfrisco.benchants.enchants.Durability;
-import com.bfrisco.benchants.enchants.Fishing;
-import com.bfrisco.benchants.enchants.Tree;
-import com.bfrisco.benchants.enchants.Trench;
+import com.bfrisco.benchants.enchants.*;
 import com.bfrisco.benchants.utils.ChargeManagement;
 import com.bfrisco.benchants.utils.Toggle;
 import org.bukkit.Bukkit;
@@ -44,6 +41,7 @@ public class BEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Toggle(), this);
         Bukkit.getPluginManager().registerEvents(new Fishing(),this);
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(),this);
+        Bukkit.getPluginManager().registerEvents(new SuperMan(),this);
 
         Objects.requireNonNull(getCommand("benchants")).setExecutor(new Commands());
         Objects.requireNonNull(getCommand("ancient")).setExecutor(new PlayerCommands());
