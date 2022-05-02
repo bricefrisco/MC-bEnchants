@@ -69,13 +69,10 @@ public class Tree implements Listener {
             BEnchants.LOGGER.warning("Tree configuration not found!");
             return;
         }
-
         List<String> items = Tree.getStringList("destroyable-items");
-
         if (items.size() == 0) {
             BEnchants.LOGGER.warning("No destroyable-items found in Tree section of config.");
         }
-
         for (String item : items) {
             try {
                 ALLOWED_ITEMS.add(Material.valueOf(item));
@@ -83,13 +80,10 @@ public class Tree implements Listener {
                 BEnchants.LOGGER.warning("'" + item + "' is not a valid material name! Skipping this item.");
             }
         }
-
         List<String> enchantableItems = Tree.getStringList("enchantable-items");
-
         if (items.size() == 0) {
             BEnchants.LOGGER.warning("No enchantable-items found in Tree section of config.");
         }
-
         for (String item : enchantableItems) {
             try {
                 ENCHANTABLE_ITEMS.add(Material.valueOf(item));
@@ -98,7 +92,6 @@ public class Tree implements Listener {
             }
         }
     }
-
     private void dropExperience(Block block) {
         int experience = switch (block.getType()) {
             case OAK_LOG -> getRandomNumber(0, 2);
@@ -107,7 +100,6 @@ public class Tree implements Listener {
             case DARK_OAK_LOG -> getRandomNumber(2, 5);
             default -> 0;
         };
-
         if (experience > 0) {
             block.getWorld().spawn(block.getLocation(), ExperienceOrb.class).setExperience(5);
         }
@@ -128,19 +120,13 @@ public class Tree implements Listener {
         for(int x = bx - radius; x <= bx + radius; x++) {
             for(int y = by - radius; y <= by + radius; y++) {
                 for(int z = bz - radius; z <= bz + radius; z++) {
-
                     double distance = ((bx-x) * (bx-x) + ((bz-z) * (bz-z)) + ((by-y) * (by-y)));
-
                     if(distance < radius * radius && !(hollow && distance < ((radius - 1) * (radius - 1)))) {
-
                         circleBlocks.add(location.getWorld().getBlockAt(x, y, z));
-
                     }
-
                 }
             }
         }
-
         return circleBlocks;
     }
 

@@ -29,7 +29,6 @@ public class SuperMan implements Listener {
         meta.setLore(lore);
         superMansTorment.setItemMeta(meta);
 
-
         Player player = event.getPlayer();
         if (player.hasPermission("Superman.op") && event.getAction().isRightClick()) {
             Inventory inv = player.getInventory();

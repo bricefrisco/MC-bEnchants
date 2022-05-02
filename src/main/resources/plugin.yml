@@ -4,7 +4,6 @@ main: com.bfrisco.benchants.BEnchants
 author: bfrisco
 description: bEnchants custom enchants
 api-version: 1.18
-depend: [NBTAPI]
 
 commands:
   ancient:
@@ -12,9 +11,7 @@ commands:
   benchants:
     description: Enchants an item
     usage: |
-      /<command> <apply|remove> <enchant>
       /<command> reload
-      /<command> <toggle>
 
 permissions:
   benchants.enchant:

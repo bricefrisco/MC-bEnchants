@@ -42,6 +42,7 @@ public class BEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Fishing(),this);
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(),this);
         Bukkit.getPluginManager().registerEvents(new SuperMan(),this);
+/*        Bukkit.getPluginManager().registerEvents(new HoverBoots(),this);*/
 
         Objects.requireNonNull(getCommand("benchants")).setExecutor(new Commands());
         Objects.requireNonNull(getCommand("ancient")).setExecutor(new PlayerCommands());
