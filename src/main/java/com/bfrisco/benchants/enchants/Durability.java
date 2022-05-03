@@ -2,9 +2,6 @@ package com.bfrisco.benchants.enchants;
 
 import com.bfrisco.benchants.BEnchants;
 import com.bfrisco.benchants.utils.ItemInfo;
-import com.bfrisco.benchants.utils.Toggle;
-import de.tr7zw.nbtapi.NBTItem;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;

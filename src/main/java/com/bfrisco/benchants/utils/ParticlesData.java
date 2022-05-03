@@ -1,6 +1,5 @@
 package com.bfrisco.benchants.utils;
 
-import com.bfrisco.benchants.enchants.Tree;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;

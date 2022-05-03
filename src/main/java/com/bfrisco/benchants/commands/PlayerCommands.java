@@ -3,7 +3,7 @@ package com.bfrisco.benchants.commands;
 import com.bfrisco.benchants.BEnchants;
 import com.bfrisco.benchants.utils.BEnchantEffects;
 import com.bfrisco.benchants.utils.ItemInfo;
-import com.bfrisco.benchants.utils.Toggle;
+import com.bfrisco.benchants.utils.ToggleImbuedItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -43,7 +43,7 @@ public class PlayerCommands implements CommandExecutor{
             if (loreList == null) return false;
             for (String lore : loreList) {
                 if (ItemInfo.UNIMBUED_LORE.contains(lore)) {
-                    Toggle.imbue(item);
+                    ToggleImbuedItem.imbue(item);
                     new BEnchantEffects().enableEffect(player);
                     BEnchants.LOGGER.info(player.getName() + " has imbued a titan tool...");
                     return true;
