@@ -33,7 +33,7 @@ public class ChargeManagement implements Listener {
             Bukkit.getServer().getConsoleSender().sendMessage("isTitanTool " + ItemInfo.isTitanTool(itemClicked));
             if (ItemInfo.isImbued(itemClicked)) return;
             Bukkit.getServer().getConsoleSender().sendMessage("isImbued " + ItemInfo.isImbued(itemClicked));
-            addChargeLore(itemClicked,numberOfCharge);
+            addChargeLore(itemClicked,numberOfCharge * 100);
             player.getItemOnCursor().setAmount(0);
             player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
             player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE,10, 1);

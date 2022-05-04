@@ -1,6 +1,6 @@
 package com.bfrisco.benchants.misc;
 
-import com.bfrisco.benchants.enchants.TitanAxe;
+import com.bfrisco.benchants.enchants.TitanAxe.TitanAxe;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -36,11 +36,11 @@ public class SuperMan implements Listener {
 
             if (!inv.containsAtLeast(superMansTorment,1)) return;
             if (!player.getInventory().getItemInMainHand().equals(superMansTorment)) {
-                player.sendMessage("Item in hand is not correct");
                 return;
             }
 
             Location origin = player.getEyeLocation();
+
             Vector direction = origin.getDirection();
 
             direction.multiply(25);
@@ -69,6 +69,10 @@ public class SuperMan implements Listener {
                 Bukkit.getPluginManager().callEvent(e);
                 if (!e.isCancelled()) {
                     block.breakNaturally();
+                }
+                if (player.getTargetEntity(100) != null){
+                    Location targetEntity = player.getTargetEntity(100).getLocation();
+                    targetEntity.createExplosion(3,true);
                 }
                 blockLocation.createExplosion(3,true);
                 block.breakNaturally();

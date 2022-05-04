@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ToggleChargedItem implements Listener {
 
-    @EventHandler
+/*    @EventHandler
     public static void activateClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Material coolDown = Material.JIGSAW;
@@ -57,6 +57,6 @@ public class ToggleChargedItem implements Listener {
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
-    }
+    }*/
 
 }

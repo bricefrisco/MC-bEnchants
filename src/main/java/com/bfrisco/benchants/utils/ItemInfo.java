@@ -26,6 +26,14 @@ public class ItemInfo {
     public static final String YELLOW = "§x§F§F§E§C§2§7";
     public static final String BLUE = "§x§6§D§5§E§F§F";
 
+    public static final String SHOVEL_ONE_CHARGED = "§8Ancient Power §x§F§F§0§0§4§C1";
+    public static final String SHOVEL_TWO_CHARGED = "§8Ancient Power §x§F§F§0§0§4§C2";
+    public static final String SHOVEL_THREE_CHARGED = "§8Ancient Power §x§F§F§0§0§4§C3";
+
+    public static final String SHOVEL_ONE_IMBUED = "§8Ancient Power §x§F§F§0§0§4§C1";
+    public static final String SHOVEL_TWO_IMBUED = "§8Ancient Power §x§F§F§0§0§4§C2";
+    public static final String SHOVEL_THREE_IMBUED = "§8Ancient Power §x§F§F§0§0§4§C3";
+
     public static final List<String> TITANLORE = new ArrayList<>(){
         {
             add(ANCIENT_POWER_ACTIVE);
@@ -35,6 +43,13 @@ public class ItemInfo {
             add(ANCIENT_BLUE);
             add(ANCIENT_CHARGE_ACTIVE);
             add(ANCIENT_CHARGE_INACTIVE);
+
+            add(SHOVEL_ONE_CHARGED);
+            add(SHOVEL_TWO_CHARGED);
+            add(SHOVEL_THREE_CHARGED);
+            add(SHOVEL_ONE_IMBUED);
+            add(SHOVEL_TWO_IMBUED);
+            add(SHOVEL_THREE_IMBUED);
         }
     };
 
@@ -42,6 +57,10 @@ public class ItemInfo {
         {
             add(ANCIENT_POWER_ACTIVE);
             add(ANCIENT_POWER_INACTIVE);
+
+            add(SHOVEL_ONE_IMBUED);
+            add(SHOVEL_TWO_IMBUED);
+            add(SHOVEL_THREE_IMBUED);
         }
     };
 
@@ -57,6 +76,10 @@ public class ItemInfo {
         {
             add(ANCIENT_CHARGE_ACTIVE);
             add(ANCIENT_CHARGE_INACTIVE);
+
+            add(SHOVEL_ONE_CHARGED);
+            add(SHOVEL_TWO_CHARGED);
+            add(SHOVEL_THREE_CHARGED);
         }
     };
 

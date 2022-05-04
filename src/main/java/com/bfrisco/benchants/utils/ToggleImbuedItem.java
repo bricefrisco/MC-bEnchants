@@ -1,5 +1,6 @@
 package com.bfrisco.benchants.utils;
 
+import com.bfrisco.benchants.enchants.TitanShovel.ShovelInfo;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class ToggleImbuedItem implements Listener {
 
-    @EventHandler
+/*    @EventHandler
     public static void activateClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Material coolDown = Material.JIGSAW;
@@ -25,7 +26,7 @@ public class ToggleImbuedItem implements Listener {
         if (!player.isSneaking()) return;
         if (!player.hasPermission("benchants.toggle")) return;
         toggleAncientPower(item,player);
-    }
+    }*/
 
     public static void toggleAncientPower(ItemStack item, Player player){
         List<String> loreList = item.getItemMeta().getLore();
@@ -43,7 +44,7 @@ public class ToggleImbuedItem implements Listener {
     public static void imbue(ItemStack item){
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.ANCIENT_POWER_ACTIVE);
+        loreList.set(index, ShovelInfo.SHOVEL_ONE_IMBUED);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);

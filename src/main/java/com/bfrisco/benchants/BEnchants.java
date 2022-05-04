@@ -4,6 +4,11 @@ import com.bfrisco.benchants.commands.Commands;
 import com.bfrisco.benchants.commands.PlayerCommands;
 
 import com.bfrisco.benchants.enchants.*;
+import com.bfrisco.benchants.enchants.TitanAxe.TitanAxe;
+import com.bfrisco.benchants.enchants.TitanRod.TitanRod;
+import com.bfrisco.benchants.enchants.TitanShovel.TitanShovel;
+import com.bfrisco.benchants.enchants.TitanShovel.ToggleChargedShovel;
+import com.bfrisco.benchants.enchants.TitanShovel.ToggleImbuedShovel;
 import com.bfrisco.benchants.misc.SuperMan;
 import com.bfrisco.benchants.utils.ChargeManagement;
 import com.bfrisco.benchants.utils.ToggleImbuedItem;
@@ -39,6 +44,9 @@ public class BEnchants extends JavaPlugin {
         Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "bEnchants  E N A B L E D  with emphasis!!!!!!");
         Bukkit.getPluginManager().registerEvents(new Trench(), this);
         Bukkit.getPluginManager().registerEvents(new TitanAxe(), this);
+        Bukkit.getPluginManager().registerEvents(new TitanShovel(), this);
+        Bukkit.getPluginManager().registerEvents(new ToggleImbuedShovel(), this);
+        Bukkit.getPluginManager().registerEvents(new ToggleChargedShovel(), this);
         Bukkit.getPluginManager().registerEvents(new Durability(), this);
         Bukkit.getPluginManager().registerEvents(new ToggleImbuedItem(), this);
         Bukkit.getPluginManager().registerEvents(new ToggleChargedItem(), this);
