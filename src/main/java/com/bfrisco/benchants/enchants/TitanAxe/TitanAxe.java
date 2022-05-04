@@ -39,7 +39,7 @@ public class TitanAxe implements Listener {
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
         if (item.getType() != axe) return;
         if (!ItemInfo.isTitanTool(item)) return;
-        if (!ItemInfo.isActive(item) && !ItemInfo.isActiveCharge(item)) return;
+        if (!ItemInfo.isActiveImbued(item) && !ItemInfo.isActiveCharged(item)) return;
         Location playerLocation = player.getLocation();
         ChargeManagement.decreaseChargeLore(item, player);
         for (Block block : generateSphere(event.getBlock().getLocation(),5,false)) {

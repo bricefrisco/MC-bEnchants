@@ -31,11 +31,11 @@ public class ToggleImbuedItem implements Listener {
     public static void toggleAncientPower(ItemStack item, Player player){
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return;
-        if (ItemInfo.isActive(item)) {
+        if (ItemInfo.isActiveImbued(item)) {
             disableAncientPower(item);
             new BEnchantEffects().disableEffect(player);
 
-        } else if (!ItemInfo.isActive(item)) {
+        } else if (!ItemInfo.isActiveImbued(item)) {
             enableAncientPower(item);
             new BEnchantEffects().enableEffect(player);
         }
@@ -44,7 +44,7 @@ public class ToggleImbuedItem implements Listener {
     public static void imbue(ItemStack item){
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index, ShovelInfo.SHOVEL_ONE_IMBUED);
+        loreList.set(index, ItemInfo.IMBUED_ONE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
@@ -53,7 +53,7 @@ public class ToggleImbuedItem implements Listener {
     public static void enableAncientPower(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.ANCIENT_POWER_ACTIVE);
+        loreList.set(index,ItemInfo.IMBUED_ONE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
@@ -62,7 +62,7 @@ public class ToggleImbuedItem implements Listener {
     public static void disableAncientPower(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.ANCIENT_POWER_INACTIVE);
+        loreList.set(index,ItemInfo.IMBUED_INACTIVE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);

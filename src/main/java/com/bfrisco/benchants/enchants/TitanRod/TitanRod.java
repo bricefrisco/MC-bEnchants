@@ -32,7 +32,7 @@ public class TitanRod implements Listener {
         Inventory inv = player.getInventory();
         if (!ItemInfo.isTitanTool(item)) return;
 
-        if (!ItemInfo.isActive(item) && !ItemInfo.isActiveCharge(item)) return;
+        if (!ItemInfo.isActiveImbued(item) && !ItemInfo.isActiveCharged(item)) return;
 
 
 

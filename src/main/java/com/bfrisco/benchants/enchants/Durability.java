@@ -28,10 +28,9 @@ public class Durability implements Listener {
         Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
         if (!ItemInfo.isTitanTool(item)) return;
-        if (!ItemInfo.isActive(item)) return;
+        if (!ItemInfo.isActiveImbued(item)) return;
         event.setCancelled(Boolean.TRUE);
     }
-
 
     public static void loadConfig() {
         ENCHANTABLE_ITEMS.clear();

@@ -9,15 +9,10 @@ import java.util.List;
 
 public class ItemInfo {
 
-    public static final String ANCIENT_POWER_ACTIVE = "§8Ancient Power §x§F§F§0§0§4§CΩ";
-    public static final String ANCIENT_POWER_INACTIVE = "§8Ancient Power Ω";
-
     public static final String ANCIENT_RED = "§8Ancient Power§x§F§F§0§0§0§0 ♆";
     public static final String ANCIENT_YELLOW = "§8Ancient Power§x§F§F§E§C§2§7 ♆";
     public static final String ANCIENT_BLUE = "§8Ancient Power§x§6§D§5§E§F§F ♆";
 
-    public static final String ANCIENT_CHARGE_ACTIVE = "§8Ancient Power §x§F§F§0§0§4§C♆";
-    public static final String ANCIENT_CHARGE_INACTIVE = "§8Ancient Power ♆";
     public static final String ANCIENT_CHARGE = "§8Charge:§x§F§F§0§0§4§C";
     public static final String POWER_CRYSTAL = "§x§F§F§0§0§4§CAncient Charge";
     public static final String ANCIENT_DEPLETED = " ";
@@ -26,41 +21,31 @@ public class ItemInfo {
     public static final String YELLOW = "§x§F§F§E§C§2§7";
     public static final String BLUE = "§x§6§D§5§E§F§F";
 
-    public static final String SHOVEL_ONE_CHARGED = "§8Ancient Power §x§F§F§0§0§4§C1";
-    public static final String SHOVEL_TWO_CHARGED = "§8Ancient Power §x§F§F§0§0§4§C2";
-    public static final String SHOVEL_THREE_CHARGED = "§8Ancient Power §x§F§F§0§0§4§C3";
+    public static final String CHARGED_INACTIVE = "§8Ancient Power ♆";
+    public static final String CHARGED_ONE = "§8Ancient Power §x§F§F§0§0§4§C♆ I";
+    public static final String CHARGED_TWO = "§8Ancient Power §x§F§F§0§0§4§C♆ II";
+    public static final String CHARGED_THREE = "§8Ancient Power §x§F§F§0§0§4§C♆ III";
 
-    public static final String SHOVEL_ONE_IMBUED = "§8Ancient Power §x§F§F§0§0§4§C1";
-    public static final String SHOVEL_TWO_IMBUED = "§8Ancient Power §x§F§F§0§0§4§C2";
-    public static final String SHOVEL_THREE_IMBUED = "§8Ancient Power §x§F§F§0§0§4§C3";
+    public static final String IMBUED_INACTIVE = "§8Ancient Power Ω";
+    public static final String IMBUED_ONE = "§8Ancient Power §x§F§F§0§0§4§CΩ I";
+    public static final String IMBUED_TWO = "§8Ancient Power §x§F§F§0§0§4§CΩ II";
+    public static final String IMBUED_THREE = "§8Ancient Power §x§F§F§0§0§4§CΩ III";
 
-    public static final List<String> TITANLORE = new ArrayList<>(){
+    public static final List<String> TITAN_LORE = new ArrayList<>(){
         {
-            add(ANCIENT_POWER_ACTIVE);
-            add(ANCIENT_POWER_INACTIVE);
             add(ANCIENT_RED);
             add(ANCIENT_YELLOW);
             add(ANCIENT_BLUE);
-            add(ANCIENT_CHARGE_ACTIVE);
-            add(ANCIENT_CHARGE_INACTIVE);
 
-            add(SHOVEL_ONE_CHARGED);
-            add(SHOVEL_TWO_CHARGED);
-            add(SHOVEL_THREE_CHARGED);
-            add(SHOVEL_ONE_IMBUED);
-            add(SHOVEL_TWO_IMBUED);
-            add(SHOVEL_THREE_IMBUED);
-        }
-    };
+            add(CHARGED_INACTIVE);
+            add(CHARGED_ONE);
+            add(CHARGED_TWO);
+            add(CHARGED_THREE);
 
-    public static final List<String> IMBUED_LORE = new ArrayList<>(){
-        {
-            add(ANCIENT_POWER_ACTIVE);
-            add(ANCIENT_POWER_INACTIVE);
-
-            add(SHOVEL_ONE_IMBUED);
-            add(SHOVEL_TWO_IMBUED);
-            add(SHOVEL_THREE_IMBUED);
+            add(IMBUED_INACTIVE);
+            add(IMBUED_ONE);
+            add(IMBUED_TWO);
+            add(IMBUED_THREE);
         }
     };
 
@@ -72,14 +57,79 @@ public class ItemInfo {
         }
     };
 
-    public static final List<String> ANCIENT_CHARGE_LORE = new ArrayList<>(){
+    public static final List<String> ACTIVE_LORE = new ArrayList<>(){
         {
-            add(ANCIENT_CHARGE_ACTIVE);
-            add(ANCIENT_CHARGE_INACTIVE);
+            add(CHARGED_ONE);
+            add(CHARGED_TWO);
+            add(CHARGED_THREE);
 
-            add(SHOVEL_ONE_CHARGED);
-            add(SHOVEL_TWO_CHARGED);
-            add(SHOVEL_THREE_CHARGED);
+            add(IMBUED_ONE);
+            add(IMBUED_TWO);
+            add(IMBUED_THREE);
+        }
+    };
+
+    public static final List<String> IMBUED_LORE = new ArrayList<>(){
+        {
+            add(IMBUED_ONE);
+            add(IMBUED_TWO);
+            add(IMBUED_THREE);
+            add(IMBUED_INACTIVE);
+        }
+    };
+
+    public static final List<String> ACTIVE_IMBUED_LORE = new ArrayList<>(){
+        {
+            add(IMBUED_ONE);
+            add(IMBUED_TWO);
+            add(IMBUED_THREE);
+
+        }
+    };
+
+    public static final List<String> CHARGED_LORE = new ArrayList<>(){
+        {
+            add(CHARGED_ONE);
+            add(CHARGED_TWO);
+            add(CHARGED_THREE);
+            add(CHARGED_INACTIVE);
+        }
+    };
+
+    public static final List<String> ACTIVE_CHARGED_LORE = new ArrayList<>(){
+        {
+            add(CHARGED_ONE);
+            add(CHARGED_TWO);
+            add(CHARGED_THREE);
+
+        }
+    };
+
+    public static final List<String> INACTIVE_LORE = new ArrayList<>(){
+        {
+            add(IMBUED_INACTIVE);
+            add(CHARGED_INACTIVE);
+        }
+    };
+
+    public static final List<String> LEVEL_ONE = new ArrayList<>(){
+        {
+            add(IMBUED_ONE);
+            add(CHARGED_ONE);
+        }
+    };
+
+    public static final List<String> LEVEL_TWO = new ArrayList<>(){
+        {
+            add(IMBUED_TWO);
+            add(CHARGED_TWO);
+        }
+    };
+
+    public static final List<String> LEVEL_THREE = new ArrayList<>(){
+        {
+            add(IMBUED_THREE);
+            add(CHARGED_THREE);
         }
     };
 
@@ -88,19 +138,54 @@ public class ItemInfo {
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
         for (String lore : loreList) {
-
-            if (TITANLORE.contains(lore)) {
+            if (TITAN_LORE.contains(lore)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean isActive(ItemStack item){
+    public static boolean isLevelOne(ItemStack item){
+        if (!item.hasItemMeta()) return false;
+        List<String> loreList = item.getItemMeta().getLore();
+        if (loreList == null) return false;
+        for (String lore : loreList) {
+            if (LEVEL_ONE.contains(lore)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isLevelTwo(ItemStack item){
+        if (!item.hasItemMeta()) return false;
+        List<String> loreList = item.getItemMeta().getLore();
+        if (loreList == null) return false;
+        for (String lore : loreList) {
+            if (LEVEL_TWO.contains(lore)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isLevelThree(ItemStack item){
+        if (!item.hasItemMeta()) return false;
+        List<String> loreList = item.getItemMeta().getLore();
+        if (loreList == null) return false;
+        for (String lore : loreList) {
+            if (LEVEL_THREE.contains(lore)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isActiveImbued(ItemStack item){
 
         List<String> loreList = item.getItemMeta().getLore();
         for (String lore : loreList) {
-            if (ANCIENT_POWER_ACTIVE.equalsIgnoreCase(lore)) {
+            if (ACTIVE_IMBUED_LORE.contains(lore)) {
                 Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientPowerActive check");
                 return true;
             }
@@ -108,11 +193,23 @@ public class ItemInfo {
         return false;
     }
 
-    public static boolean isActiveCharge(ItemStack item){
+    public static boolean isActiveCharged(ItemStack item){
         Bukkit.getServer().getConsoleSender().sendMessage("Inside AncientChargeActive check");
         List<String> loreList = item.getItemMeta().getLore();
         for (String lore : loreList) {
-            if (ANCIENT_CHARGE_ACTIVE.equalsIgnoreCase(lore)) {
+            if (ACTIVE_CHARGED_LORE.contains(lore)) {
+                Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientChargeActive check");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isDormantCharged(ItemStack item){
+        Bukkit.getServer().getConsoleSender().sendMessage("Inside AncientChargeActive check");
+        List<String> loreList = item.getItemMeta().getLore();
+        for (String lore : loreList) {
+            if (INACTIVE_LORE.contains(lore)) {
                 Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientChargeActive check");
                 return true;
             }
@@ -132,17 +229,24 @@ public class ItemInfo {
         return false;
     }
 
+    public static boolean isUnImbued(ItemStack item) {
+
+        List<String> loreList = item.getItemMeta().getLore();
+        if (loreList == null) return false;
+        for (String lore : loreList) {
+            if (UNIMBUED_LORE.contains(lore)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean isPowerCrystal(ItemStack item) {
         if (!item.hasItemMeta()) return false;
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
         Material type = item.getType();
         Material powerCrystal = Material.AMETHYST_SHARD;
-  /*      for (String lore : loreList) {
-            if (POWER_CRYSTAL.equalsIgnoreCase(lore) && (type == powerCrystal)) {
-                return true;
-            }
-        }*/
         Bukkit.getServer().getConsoleSender().sendMessage("inside isPowerCrystal");
         if (loreList.stream().anyMatch(lore -> lore.matches(POWER_CRYSTAL) && (type == powerCrystal))){
             Bukkit.getServer().getConsoleSender().sendMessage("passed isPowerCrystal check");
@@ -168,7 +272,7 @@ public class ItemInfo {
         return false;
     }
 
-    public static String isColor(ItemStack item){
+    public static String getColor(ItemStack item){
         if (!item.hasItemMeta()) return null;
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return null;
@@ -187,9 +291,10 @@ public class ItemInfo {
     public static Integer getAncientPowerLoreIndex(List<String> loreList) {
         Bukkit.getServer().getConsoleSender().sendMessage("inside of getAncientPowerLoreIndex");
         for (int i = 0; i < loreList.size(); i++){
-            if (IMBUED_LORE.contains(loreList.get(i)) ||
+/*            if (IMBUED_LORE.contains(loreList.get(i)) ||
                     UNIMBUED_LORE.contains(loreList.get(i)) ||
-                    ANCIENT_CHARGE_LORE.contains(loreList.get(i))) return i;
+                    CHARGED_LORE.contains(loreList.get(i))) return i;*/
+            if (TITAN_LORE.contains(loreList.get(i))) return i;
         }
         return null;
     }

@@ -36,19 +36,19 @@ public class ToggleImbuedShovel implements Listener {
     public static void toggleImbuedShovelEnchant(ItemStack item, Player player){
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return;
-        if (ShovelInfo.isImbuedShovel1(item)) {
+        if (ShovelInfo.getImbuedState(item) == 1) {
             shovel1ToShovel2(item);
             new BEnchantEffects().disableEffect(player);
             player.sendActionBar("Shovel set to Enchant2");
-        } else if (ShovelInfo.isImbuedShovel2(item)) {
+        } else if (ShovelInfo.getImbuedState(item) == 2) {
             shovel2ToShovel3(item);
             new BEnchantEffects().enableEffect(player);
             player.sendActionBar("Shovel set to Enchant3");
-        } else if (ShovelInfo.isImbuedShovel3(item)) {
+        } else if (ShovelInfo.getImbuedState(item) == 3) {
             disableImbuedItem(item);
             new BEnchantEffects().enableEffect(player);
             player.sendActionBar("Shovel set to dormant");
-        } else if (ShovelInfo.isDormantCharged(item)) {
+        } else if (ItemInfo.isDormantCharged(item)) {
             enableImbuedItem(item);
             new BEnchantEffects().enableEffect(player);
             player.sendActionBar("Shovel set to Enchant1");
@@ -59,7 +59,7 @@ public class ToggleImbuedShovel implements Listener {
     public static void enableImbuedItem(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.SHOVEL_ONE_IMBUED);
+        loreList.set(index,ItemInfo.IMBUED_ONE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
@@ -68,7 +68,7 @@ public class ToggleImbuedShovel implements Listener {
     public static void disableImbuedItem(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.ANCIENT_POWER_INACTIVE);
+        loreList.set(index,ItemInfo.IMBUED_INACTIVE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
@@ -76,7 +76,7 @@ public class ToggleImbuedShovel implements Listener {
     public static void shovel1ToShovel2(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ShovelInfo.SHOVEL_TWO_IMBUED);
+        loreList.set(index,ItemInfo.IMBUED_TWO);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
@@ -84,7 +84,7 @@ public class ToggleImbuedShovel implements Listener {
     public static void shovel2ToShovel3(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ShovelInfo.SHOVEL_THREE_IMBUED);
+        loreList.set(index,ItemInfo.IMBUED_THREE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);

@@ -21,34 +21,28 @@ public class ChargeManagement implements Listener {
 
 
         if (event.isLeftClick()) {
-
             Player player = (Player) event.getWhoClicked();
             ItemStack itemOnCursor = player.getItemOnCursor();
             ItemStack itemClicked = event.getCurrentItem();
-            Integer numberOfCharge = itemOnCursor.getAmount();
+            int numberOfCharge = itemOnCursor.getAmount();
             if (!ItemInfo.isPowerCrystal(itemOnCursor)) return;
-            Bukkit.getServer().getConsoleSender().sendMessage("isPowerCrystal " + ItemInfo.isPowerCrystal(itemOnCursor));
             if (event.getCurrentItem() == null) return;
             if (!ItemInfo.isTitanTool(itemClicked)) return;
-            Bukkit.getServer().getConsoleSender().sendMessage("isTitanTool " + ItemInfo.isTitanTool(itemClicked));
             if (ItemInfo.isImbued(itemClicked)) return;
-            Bukkit.getServer().getConsoleSender().sendMessage("isImbued " + ItemInfo.isImbued(itemClicked));
             addChargeLore(itemClicked,numberOfCharge * 100);
             player.getItemOnCursor().setAmount(0);
             player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
             player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE,10, 1);
             event.setCancelled(true);
         }
-
     }
 
     public static void addChargeLore(ItemStack item, Integer amount){
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        Integer chargeIndex = index + 1;
+        int chargeIndex = index + 1;
 
         if (ItemInfo.hasCharge(item)) {
-            Bukkit.getServer().getConsoleSender().sendMessage("Inside addChargeLore passed hasCharge test");
             String string = loreList.get(chargeIndex);
             String string1 = string.substring(24);
             int previousCharge = Integer.parseInt(string1);
@@ -60,46 +54,39 @@ public class ChargeManagement implements Listener {
             return;
         } else
         loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + (amount));
-        loreList.set(index,ItemInfo.ANCIENT_CHARGE_ACTIVE);
+        loreList.set(index,ItemInfo.CHARGED_ONE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
-
     }
-    public static void decreaseChargeLore(ItemStack item, Player player){
 
+    public static void decreaseChargeLore(ItemStack item, Player player){
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         Integer chargeIndex = index + 1;
         if (ItemInfo.hasCharge(item)) {
-            Bukkit.getServer().getConsoleSender().sendMessage("Inside addChargeLore passed hasCharge test");
             String string = loreList.get(chargeIndex);
             String string1 = string.substring(24);
             player.sendMessage(string1);
             int previousCharge = Integer.parseInt(string1);
             int remainingCharge = previousCharge - 1;
-            if (remainingCharge < 1 && ItemInfo.isColor(item).equals("RED")) {
-                Bukkit.getServer().getConsoleSender().sendMessage("Inside passed red");
-                loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);
+            if (remainingCharge < 1 && ItemInfo.getColor(item).equals("RED")) {
                 loreList.set(index,ItemInfo.ANCIENT_RED);
-                new BEnchantEffects().depletedChargeEffect(player);
-                ItemMeta meta = item.getItemMeta();
-                meta.setLore(loreList);
-                item.setItemMeta(meta);
-
-            } else if (remainingCharge < 1 && ItemInfo.isColor(item).equals("YELLOW")) {
-                Bukkit.getServer().getConsoleSender().sendMessage("Inside passed yellow");
                 loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);
-                loreList.set(index, ItemInfo.ANCIENT_YELLOW);
                 new BEnchantEffects().depletedChargeEffect(player);
                 ItemMeta meta = item.getItemMeta();
                 meta.setLore(loreList);
                 item.setItemMeta(meta);
-
-            } else if (remainingCharge < 1 && ItemInfo.isColor(item).equals("BLUE")) {
-
-                loreList.set(chargeIndex, ItemInfo.ANCIENT_DEPLETED);
+            } else if (remainingCharge < 1 && ItemInfo.getColor(item).equals("YELLOW")) {
+                loreList.set(index, ItemInfo.ANCIENT_YELLOW);
+                loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);
+                new BEnchantEffects().depletedChargeEffect(player);
+                ItemMeta meta = item.getItemMeta();
+                meta.setLore(loreList);
+                item.setItemMeta(meta);
+            } else if (remainingCharge < 1 && ItemInfo.getColor(item).equals("BLUE")) {
                 loreList.set(index, ItemInfo.ANCIENT_BLUE);
+                loreList.set(chargeIndex, ItemInfo.ANCIENT_DEPLETED);
                 new BEnchantEffects().depletedChargeEffect(player);
                 ItemMeta meta = item.getItemMeta();
                 meta.setLore(loreList);
@@ -110,8 +97,5 @@ public class ChargeManagement implements Listener {
             meta.setLore(loreList);
             item.setItemMeta(meta);
         }
-
     }
-
-
 }

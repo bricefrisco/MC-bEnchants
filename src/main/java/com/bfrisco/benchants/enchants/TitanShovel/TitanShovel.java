@@ -34,26 +34,21 @@ public class TitanShovel implements Listener {
     @EventHandler
     @SuppressWarnings("unused")
     public void titanShovelBreakBlock(PlayerInteractEvent event) {
-
+        if (event.getClickedBlock() == null) return;
+        if (!event.getAction().isLeftClick()) return;
+        if (!ShovelInfo.isRunnableShovel(event.getPlayer().getInventory().getItemInMainHand())) return;
         IGNORE_LOCATIONS.clear();
         Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
-        player.sendMessage("Debug 1");
         player.sendMessage("IGNORED LOCATIONS" + IGNORE_LOCATIONS);
-        if (event.getClickedBlock() == null) return;
-        if (!runEnchant(item,event)) return;
         if (IGNORE_LOCATIONS.contains(event.getClickedBlock().getLocation())) {
             IGNORE_LOCATIONS.remove(event.getClickedBlock().getLocation());
             return;
         }
-        player.sendMessage("Debug 2");
 
-
-
-        player.sendMessage("Debug 3");
         Block clickedBlock = event.getClickedBlock();
 
-        if (ShovelInfo.isChargedShovel1(item) || ShovelInfo.isImbuedShovel1(item)) {
+        if (ItemInfo.isLevelOne(item)) {
             if (clickedBlock.getType() == Material.BEDROCK) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX) {
                 player.sendMessage("titan one");
@@ -68,7 +63,7 @@ public class TitanShovel implements Listener {
             player.sendMessage("decreasing charge");
         }
 
-        if (ShovelInfo.isChargedShovel2(item) || ShovelInfo.isImbuedShovel2(item)){
+        if (ItemInfo.isLevelTwo(item)){
             BlockFace blockFace = event.getBlockFace();
             player.sendMessage("Direction: " + blockFace.getDirection());
 
@@ -79,6 +74,7 @@ public class TitanShovel implements Listener {
             }
             clickedBlock.setType(Material.AIR);
             player.sendMessage("titan two");
+            ChargeManagement.decreaseChargeLore(item, player);
             ChargeManagement.decreaseChargeLore(item, player);
             player.sendMessage("decreasing charge");
 
@@ -96,10 +92,9 @@ public class TitanShovel implements Listener {
                     }
                 }
             }
-
         }
 
-        if (ShovelInfo.isChargedShovel3(item) || ShovelInfo.isImbuedShovel3(item)){
+        if (ItemInfo.isLevelThree(item)){
             BlockFace blockFace = event.getBlockFace();
             player.sendMessage("Direction: " + blockFace.getDirection());
 
@@ -109,6 +104,8 @@ public class TitanShovel implements Listener {
             }
             clickedBlock.setType(Material.AIR);
             player.sendMessage("titan three");
+            ChargeManagement.decreaseChargeLore(item, player);
+            ChargeManagement.decreaseChargeLore(item, player);
             ChargeManagement.decreaseChargeLore(item, player);
             player.sendMessage("decreasing charge");
 
@@ -135,19 +132,17 @@ public class TitanShovel implements Listener {
 
     public boolean runEnchant(ItemStack item, PlayerInteractEvent event){
         if (item.getType() != shovel) return false;
-        if (!event.getAction().isLeftClick()) return false;
 
-        if (!ItemInfo.isTitanTool(item)) return false;
-
-        if (ShovelInfo.isChargedShovel1(item)) return true;
-        if (ShovelInfo.isChargedShovel2(item)) return true;
-        if (ShovelInfo.isChargedShovel3(item)) return true;
-        if (ShovelInfo.isImbuedShovel1(item)) return true;
-        if (ShovelInfo.isImbuedShovel2(item)) return true;
-        if (ShovelInfo.isImbuedShovel3(item)) return true;
+/*        if (!ItemInfo.isTitanTool(item)) return false;
+        List<String> loreList = item.getLore();
+        for (String lore : loreList){
+            if (ItemInfo.IMBUED_LORE.contains(lore) || ItemInfo.CHARGED_LORE.contains(lore)){
+                return true;
+            }
+        }
         event.getPlayer().sendMessage("Has Charge: " + ItemInfo.hasCharge(item));
-        if(!ItemInfo.hasCharge(item)) return false;
-        return true;
+        if(!ItemInfo.hasCharge(item)) return false;*/
+        return false;
     }
 
 

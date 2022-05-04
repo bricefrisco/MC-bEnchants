@@ -40,7 +40,7 @@ public class Trench implements Listener {
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
         if (item.getType() != pick) return;
         if (!ItemInfo.isTitanTool(item)) return;
-        if (!ItemInfo.isActive(item) && !ItemInfo.isActiveCharge(item)) return;
+        if (!ItemInfo.isActiveImbued(item) && !ItemInfo.isActiveCharged(item)) return;
 
         ChargeManagement.decreaseChargeLore(item,player);
         player.sendMessage("decreasing charge");
