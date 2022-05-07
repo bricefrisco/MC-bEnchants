@@ -4,6 +4,7 @@ import com.bfrisco.benchants.BEnchants;
 import com.bfrisco.benchants.utils.ItemInfo;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +29,7 @@ public class Durability implements Listener {
         Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
         if (!ItemInfo.isTitanTool(item)) return;
-        if (!ItemInfo.isActiveImbued(item)) return;
+        if (!ItemInfo.isActiveImbued(item) && !ItemInfo.isActiveCharged(item)) return;
         event.setCancelled(Boolean.TRUE);
     }
 

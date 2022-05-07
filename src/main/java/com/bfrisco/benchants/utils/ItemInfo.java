@@ -134,7 +134,7 @@ public class ItemInfo {
     };
 
     public static boolean isTitanTool(ItemStack item){
-        if (!item.hasItemMeta()) return false;
+
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
         for (String lore : loreList) {
@@ -146,7 +146,7 @@ public class ItemInfo {
     }
 
     public static boolean isLevelOne(ItemStack item){
-        if (!item.hasItemMeta()) return false;
+
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
         for (String lore : loreList) {
@@ -158,7 +158,7 @@ public class ItemInfo {
     }
 
     public static boolean isLevelTwo(ItemStack item){
-        if (!item.hasItemMeta()) return false;
+
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
         for (String lore : loreList) {
@@ -170,7 +170,7 @@ public class ItemInfo {
     }
 
     public static boolean isLevelThree(ItemStack item){
-        if (!item.hasItemMeta()) return false;
+
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
         for (String lore : loreList) {
@@ -179,6 +179,24 @@ public class ItemInfo {
             }
         }
         return false;
+    }
+
+    public static int getItemLevel(ItemStack item){
+
+        if (!item.hasItemMeta()) return -1;
+        List<String> loreList = item.getItemMeta().getLore();
+        if (loreList == null) return -1;
+        for (String lore : loreList) {
+            if (LEVEL_ONE.contains(lore)) {
+                return 1;
+            } else if (LEVEL_TWO.contains(lore)) {
+                return 2;
+            } else if (LEVEL_THREE.contains(lore)) {
+                return 3;
+            }
+        }
+        return -1;
+
     }
 
     public static boolean isActiveImbued(ItemStack item){
@@ -242,7 +260,7 @@ public class ItemInfo {
     }
 
     public static boolean isPowerCrystal(ItemStack item) {
-        if (!item.hasItemMeta()) return false;
+
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
         Material type = item.getType();

@@ -1,5 +1,6 @@
-package com.bfrisco.benchants.enchants.TitanShovel;
+package com.bfrisco.benchants.enchants.TitanRod;
 
+import com.bfrisco.benchants.enchants.TitanShovel.ShovelInfo;
 import com.bfrisco.benchants.utils.BEnchantEffects;
 import com.bfrisco.benchants.utils.ItemInfo;
 import org.bukkit.Material;
@@ -12,8 +13,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-public class ToggleImbuedShovel implements Listener {
-    public static Material shovel = Material.DIAMOND_SHOVEL;
+public class ToggleImbuedRod implements Listener {
+    public static Material rod = Material.FISHING_ROD;
 
     @EventHandler
     public static void activateClick(PlayerInteractEvent event) {
@@ -22,41 +23,40 @@ public class ToggleImbuedShovel implements Listener {
         if (!event.getAction().isRightClick()) return;
         if (!player.isSneaking()) return;
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getType() != shovel) return;
-        player.sendMessage("is shovel");
+        if (item.getType() != rod) return;
         if (!item.hasItemMeta()) return;
         if (!ItemInfo.isTitanTool(item)) return;
         if (!ItemInfo.isImbued(item)) return;
         if (player.hasCooldown(coolDown)) return;
         player.setCooldown(coolDown,25);
         if (!player.hasPermission("benchants.toggle")) return;
-        toggleImbuedShovelEnchant(item,player);
+        event.setCancelled(true);
+        toggleImbuedRodEnchant(item,player);
     }
 
-    public static void toggleImbuedShovelEnchant(ItemStack item, Player player){
+    public static void toggleImbuedRodEnchant(ItemStack item, Player player){
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return;
-        if (ShovelInfo.getImbuedState(item) == 1) {
-            shovel1ToShovel2(item);
+        if (RodInfo.getImbuedState(item) == 1) {
+            rod1ToRod2(item);
             new BEnchantEffects().disableEffect(player);
-            player.sendActionBar("Shovel set to Enchant2");
-        } else if (ShovelInfo.getImbuedState(item) == 2) {
-            shovel2ToShovel3(item);
+            player.sendActionBar("Rod set to Enchant2");
+        } else if (RodInfo.getImbuedState(item) == 2) {
+            rod2ToRod3(item);
             new BEnchantEffects().enableEffect(player);
-            player.sendActionBar("Shovel set to Enchant3");
-        } else if (ShovelInfo.getImbuedState(item) == 3) {
-            disableImbuedItem(item);
+            player.sendActionBar("Rod set to Enchant3");
+        } else if (RodInfo.getImbuedState(item) == 3) {
+            disableImbuedRod(item);
             new BEnchantEffects().enableEffect(player);
-            player.sendActionBar("Shovel set to dormant");
+            player.sendActionBar("Rod set to dormant");
         } else if (ItemInfo.isDormantCharged(item)) {
-            enableImbuedItem(item);
+            enableImbuedRod(item);
             new BEnchantEffects().enableEffect(player);
-            player.sendActionBar("Shovel set to Enchant1");
+            player.sendActionBar("Rod set to Enchant1");
         }
-
     }
 
-    public static void enableImbuedItem(ItemStack item) {
+    public static void enableImbuedRod(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         loreList.set(index,ItemInfo.IMBUED_ONE);
@@ -65,7 +65,7 @@ public class ToggleImbuedShovel implements Listener {
         item.setItemMeta(meta);
     }
 
-    public static void disableImbuedItem(ItemStack item) {
+    public static void disableImbuedRod(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         loreList.set(index,ItemInfo.IMBUED_INACTIVE);
@@ -73,7 +73,7 @@ public class ToggleImbuedShovel implements Listener {
         meta.setLore(loreList);
         item.setItemMeta(meta);
     }
-    public static void shovel1ToShovel2(ItemStack item) {
+    public static void rod1ToRod2(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         loreList.set(index,ItemInfo.IMBUED_TWO);
@@ -81,7 +81,7 @@ public class ToggleImbuedShovel implements Listener {
         meta.setLore(loreList);
         item.setItemMeta(meta);
     }
-    public static void shovel2ToShovel3(ItemStack item) {
+    public static void rod2ToRod3(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         loreList.set(index,ItemInfo.IMBUED_THREE);

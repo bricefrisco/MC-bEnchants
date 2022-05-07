@@ -22,6 +22,7 @@ public class ToggleChargedShovel implements Listener {
         Material coolDown = Material.JIGSAW;
 
         if (!event.getAction().isRightClick()) return;
+        if (!player.isSneaking()) return;
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item.getType() != shovel) return;
         player.sendMessage("is shovel");
@@ -30,7 +31,6 @@ public class ToggleChargedShovel implements Listener {
         if (!ItemInfo.hasCharge(item)) return;
         if (player.hasCooldown(coolDown)) return;
         player.setCooldown(coolDown,25);
-        if (!player.isSneaking()) return;
         if (!player.hasPermission("benchants.charge.toggle")) return;
         player.sendMessage("Passed activateClick checks");
         toggleChargedShovelEnchant(item,player);
@@ -39,15 +39,15 @@ public class ToggleChargedShovel implements Listener {
     public static void toggleChargedShovelEnchant(ItemStack item, Player player){
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return;
-        if (ShovelInfo.getChargedShovel(item) == 1) {
+        if (ShovelInfo.getChargedState(item) == 1) {
             shovel1ToShovel2(item);
             new BEnchantEffects().disableEffect(player);
             player.sendActionBar("Shovel set to Enchant2");
-        } else if (ShovelInfo.getChargedShovel(item) == 2) {
+        } else if (ShovelInfo.getChargedState(item) == 2) {
             shovel2ToShovel3(item);
             new BEnchantEffects().enableEffect(player);
             player.sendActionBar("Shovel set to Enchant3");
-        } else if (ShovelInfo.getChargedShovel(item) == 3) {
+        } else if (ShovelInfo.getChargedState(item) == 3) {
             disableChargedItem(item);
             new BEnchantEffects().enableEffect(player);
             player.sendActionBar("Shovel set to dormant");

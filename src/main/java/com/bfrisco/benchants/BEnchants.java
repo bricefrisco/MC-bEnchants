@@ -5,8 +5,13 @@ import com.bfrisco.benchants.commands.PlayerCommands;
 
 import com.bfrisco.benchants.enchants.*;
 import com.bfrisco.benchants.enchants.TitanAxe.TitanAxe;
-import com.bfrisco.benchants.enchants.TitanRod.TitanRod;
-import com.bfrisco.benchants.enchants.TitanShovel.TitanShovel;
+import com.bfrisco.benchants.enchants.TitanPickSilk.PickSilk;
+import com.bfrisco.benchants.enchants.TitanPickSilk.ToggleChargedPickSilk;
+import com.bfrisco.benchants.enchants.TitanPickSilk.ToggleImbuedPickSilk;
+import com.bfrisco.benchants.enchants.TitanRod.Rod;
+import com.bfrisco.benchants.enchants.TitanRod.ToggleChargedRod;
+import com.bfrisco.benchants.enchants.TitanRod.ToggleImbuedRod;
+import com.bfrisco.benchants.enchants.TitanShovel.Shovel;
 import com.bfrisco.benchants.enchants.TitanShovel.ToggleChargedShovel;
 import com.bfrisco.benchants.enchants.TitanShovel.ToggleImbuedShovel;
 import com.bfrisco.benchants.misc.SuperMan;
@@ -44,13 +49,23 @@ public class BEnchants extends JavaPlugin {
         Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "bEnchants  E N A B L E D  with emphasis!!!!!!");
         Bukkit.getPluginManager().registerEvents(new Trench(), this);
         Bukkit.getPluginManager().registerEvents(new TitanAxe(), this);
-        Bukkit.getPluginManager().registerEvents(new TitanShovel(), this);
-        Bukkit.getPluginManager().registerEvents(new ToggleImbuedShovel(), this);
+
+        Bukkit.getPluginManager().registerEvents(new PickSilk(), this);
+        Bukkit.getPluginManager().registerEvents(new ToggleChargedPickSilk(), this);
+        Bukkit.getPluginManager().registerEvents(new ToggleImbuedPickSilk(), this);
+
+        Bukkit.getPluginManager().registerEvents(new Shovel(), this);
         Bukkit.getPluginManager().registerEvents(new ToggleChargedShovel(), this);
+        Bukkit.getPluginManager().registerEvents(new ToggleImbuedShovel(), this);
+
         Bukkit.getPluginManager().registerEvents(new Durability(), this);
         Bukkit.getPluginManager().registerEvents(new ToggleImbuedItem(), this);
         Bukkit.getPluginManager().registerEvents(new ToggleChargedItem(), this);
-        Bukkit.getPluginManager().registerEvents(new TitanRod(),this);
+
+        Bukkit.getPluginManager().registerEvents(new Rod(),this);
+        Bukkit.getPluginManager().registerEvents(new ToggleChargedRod(),this);
+        Bukkit.getPluginManager().registerEvents(new ToggleImbuedRod(),this);
+
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(),this);
         Bukkit.getPluginManager().registerEvents(new SuperMan(),this);
 

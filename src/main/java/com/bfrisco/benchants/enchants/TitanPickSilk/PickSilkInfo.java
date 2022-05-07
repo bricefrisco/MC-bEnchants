@@ -1,12 +1,14 @@
-package com.bfrisco.benchants.enchants.TitanShovel;
+package com.bfrisco.benchants.enchants.TitanPickSilk;
 
 import com.bfrisco.benchants.utils.ItemInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+
 import java.util.List;
 
-public class ShovelInfo {
+public class PickSilkInfo {
 
 
     public static int getChargedState(ItemStack item){
@@ -45,8 +47,9 @@ public class ShovelInfo {
         return -1;
     }
 
-    public static boolean isRunnableShovel(ItemStack item) {
-        if (item.getType() != Material.DIAMOND_SHOVEL) return false;
+    public static boolean isRunnableRod(ItemStack item) {
+        if (item.getType() != Material.DIAMOND_PICKAXE) return false;
+        if (!item.getEnchantments().containsKey(Enchantment.SILK_TOUCH)) return false;
         if (item.getItemMeta() == null) return false;
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;

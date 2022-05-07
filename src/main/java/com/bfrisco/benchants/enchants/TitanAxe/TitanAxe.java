@@ -46,7 +46,6 @@ public class TitanAxe implements Listener {
             if (block.getLocation().equals(event.getBlock().getLocation())) {
                 continue;
             }
-
             if (ALLOWED_ITEMS.contains(block.getType())) {
                 IGNORE_LOCATIONS.add(block.getLocation());
                 BlockBreakEvent e = new BlockBreakEvent(block, event.getPlayer());
@@ -63,7 +62,6 @@ public class TitanAxe implements Listener {
 
     public static void loadConfig() {
         ENCHANTABLE_ITEMS.clear();
-
         ConfigurationSection TitanAxe = BEnchants.PLUGIN.getConfig().getConfigurationSection("titanAxe");
         if (TitanAxe == null) {
             BEnchants.LOGGER.warning("TitanAxe configuration not found!");
@@ -92,6 +90,7 @@ public class TitanAxe implements Listener {
             }
         }
     }
+
     private void dropExperience(Block block) {
         int experience = switch (block.getType()) {
             case OAK_LOG -> getRandomNumber(0, 2);
@@ -110,13 +109,10 @@ public class TitanAxe implements Listener {
     }
 
     public static List<Block> generateSphere(Location location, int radius, boolean hollow) {
-
         List<Block> circleBlocks = new ArrayList<>();
-
         int bx = location.getBlockX();
         int by = location.getBlockY();
         int bz = location.getBlockZ();
-
         for(int x = bx - radius; x <= bx + radius; x++) {
             for(int y = by - radius; y <= by + radius; y++) {
                 for(int z = bz - radius; z <= bz + radius; z++) {

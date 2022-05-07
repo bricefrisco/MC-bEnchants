@@ -1,6 +1,9 @@
 package com.bfrisco.benchants.utils;
 
+import com.bfrisco.benchants.enchants.TitanPickSilk.PickSilk;
+import com.bfrisco.benchants.enchants.TitanPickSilk.PickSilkInfo;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -10,6 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -24,9 +28,10 @@ public class ChargeManagement implements Listener {
             Player player = (Player) event.getWhoClicked();
             ItemStack itemOnCursor = player.getItemOnCursor();
             ItemStack itemClicked = event.getCurrentItem();
+            if (itemOnCursor.getItemMeta() == null) return;
             int numberOfCharge = itemOnCursor.getAmount();
+            if (itemClicked == null || itemClicked.getType() == Material.AIR) return;
             if (!ItemInfo.isPowerCrystal(itemOnCursor)) return;
-            if (event.getCurrentItem() == null) return;
             if (!ItemInfo.isTitanTool(itemClicked)) return;
             if (ItemInfo.isImbued(itemClicked)) return;
             addChargeLore(itemClicked,numberOfCharge * 100);
@@ -97,5 +102,87 @@ public class ChargeManagement implements Listener {
             meta.setLore(loreList);
             item.setItemMeta(meta);
         }
+        PickSilk.isSameTool.put(player,item);
+    }
+
+    public static void decreaseChargeLore2(ItemStack item, Player player){
+        List<String> loreList = item.getItemMeta().getLore();
+        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
+        Integer chargeIndex = index + 1;
+        if (ItemInfo.hasCharge(item)) {
+            String string = loreList.get(chargeIndex);
+            String string1 = string.substring(24);
+            player.sendMessage(string1);
+            int previousCharge = Integer.parseInt(string1);
+            int remainingCharge = previousCharge - 2;
+            if (remainingCharge < 1 && ItemInfo.getColor(item).equals("RED")) {
+                loreList.set(index,ItemInfo.ANCIENT_RED);
+                loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);
+                new BEnchantEffects().depletedChargeEffect(player);
+                ItemMeta meta = item.getItemMeta();
+                meta.setLore(loreList);
+                item.setItemMeta(meta);
+            } else if (remainingCharge < 1 && ItemInfo.getColor(item).equals("YELLOW")) {
+                loreList.set(index, ItemInfo.ANCIENT_YELLOW);
+                loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);
+                new BEnchantEffects().depletedChargeEffect(player);
+                ItemMeta meta = item.getItemMeta();
+                meta.setLore(loreList);
+                item.setItemMeta(meta);
+            } else if (remainingCharge < 1 && ItemInfo.getColor(item).equals("BLUE")) {
+                loreList.set(index, ItemInfo.ANCIENT_BLUE);
+                loreList.set(chargeIndex, ItemInfo.ANCIENT_DEPLETED);
+                new BEnchantEffects().depletedChargeEffect(player);
+                ItemMeta meta = item.getItemMeta();
+                meta.setLore(loreList);
+                item.setItemMeta(meta);
+            } else
+                loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + remainingCharge);
+            ItemMeta meta = item.getItemMeta();
+            meta.setLore(loreList);
+            item.setItemMeta(meta);
+        }
+        PickSilk.isSameTool.put(player,item);
+        Bukkit.getServer().getConsoleSender().sendMessage(PickSilk.isSameTool.get(player).toString());
+    }
+
+    public static void decreaseChargeLore3(ItemStack item, Player player){
+        List<String> loreList = item.getItemMeta().getLore();
+        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
+        Integer chargeIndex = index + 1;
+        if (ItemInfo.hasCharge(item)) {
+            String string = loreList.get(chargeIndex);
+            String string1 = string.substring(24);
+            player.sendMessage(string1);
+            int previousCharge = Integer.parseInt(string1);
+            int remainingCharge = previousCharge - 3;
+            if (remainingCharge < 1 && ItemInfo.getColor(item).equals("RED")) {
+                loreList.set(index,ItemInfo.ANCIENT_RED);
+                loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);
+                new BEnchantEffects().depletedChargeEffect(player);
+                ItemMeta meta = item.getItemMeta();
+                meta.setLore(loreList);
+                item.setItemMeta(meta);
+            } else if (remainingCharge < 1 && ItemInfo.getColor(item).equals("YELLOW")) {
+                loreList.set(index, ItemInfo.ANCIENT_YELLOW);
+                loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);
+                new BEnchantEffects().depletedChargeEffect(player);
+                ItemMeta meta = item.getItemMeta();
+                meta.setLore(loreList);
+                item.setItemMeta(meta);
+            } else if (remainingCharge < 1 && ItemInfo.getColor(item).equals("BLUE")) {
+                loreList.set(index, ItemInfo.ANCIENT_BLUE);
+                loreList.set(chargeIndex, ItemInfo.ANCIENT_DEPLETED);
+                new BEnchantEffects().depletedChargeEffect(player);
+                ItemMeta meta = item.getItemMeta();
+                meta.setLore(loreList);
+                item.setItemMeta(meta);
+            } else
+                loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + remainingCharge);
+            ItemMeta meta = item.getItemMeta();
+            meta.setLore(loreList);
+            item.setItemMeta(meta);
+        }
+        PickSilk.isSameTool.put(player,item);
     }
 }
