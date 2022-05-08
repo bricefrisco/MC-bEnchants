@@ -1,6 +1,6 @@
 package com.bfrisco.benchants.misc;
 
-import com.bfrisco.benchants.enchants.TitanAxe.TitanAxe;
+import com.bfrisco.benchants.enchants.TitanAxe.Axe;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -61,7 +61,7 @@ public class SuperMan implements Listener {
 
             }
             blockL.setType(Material.AIR);
-            for (Block block : TitanAxe.generateSphere(blockLocation, 3, false)) {
+            for (Block block : Axe.generateSphere(blockLocation, 3, false)) {
                 if (block.getLocation().equals(blockLocation)) {
                     continue;
                 }
