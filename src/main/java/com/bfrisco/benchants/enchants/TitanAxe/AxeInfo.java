@@ -10,12 +10,6 @@ import java.util.*;
 
 public class AxeInfo {
 
-
-
-
-
-
-
     public static int getChargedState(ItemStack item){
         Bukkit.getServer().getConsoleSender().sendMessage("Inside AncientChargeActive check");
         List<String> loreList = item.getItemMeta().getLore();
@@ -52,7 +46,7 @@ public class AxeInfo {
         return -1;
     }
 
-    public static boolean isRunnableRod(ItemStack item) {
+    public static boolean isRunnableAxe(ItemStack item) {
         if (item.getType() != Material.DIAMOND_PICKAXE) return false;
         if (!item.getEnchantments().containsKey(Enchantment.SILK_TOUCH)) return false;
         if (item.getItemMeta() == null) return false;

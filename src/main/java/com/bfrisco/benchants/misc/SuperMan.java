@@ -31,10 +31,9 @@ public class SuperMan implements Listener {
         superMansTorment.setItemMeta(meta);
 
         Player player = event.getPlayer();
+        Inventory inv = player.getInventory();
+        if (!inv.containsAtLeast(superMansTorment,1)) return;
         if (player.hasPermission("Superman.op") && event.getAction().isRightClick()) {
-            Inventory inv = player.getInventory();
-
-            if (!inv.containsAtLeast(superMansTorment,1)) return;
             if (!player.getInventory().getItemInMainHand().equals(superMansTorment)) {
                 return;
             }

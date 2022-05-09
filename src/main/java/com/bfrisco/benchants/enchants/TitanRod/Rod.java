@@ -2,6 +2,7 @@ package com.bfrisco.benchants.enchants.TitanRod;
 
 import com.bfrisco.benchants.utils.ChargeManagement;
 import com.bfrisco.benchants.utils.ItemInfo;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,6 +30,8 @@ public class Rod implements Listener {
     public static final ItemStack Raw_Cod3 = new ItemStack(Material.COD,3);
     public static final ItemStack Raw_Salmon3 = new ItemStack(Material.SALMON,3);
 
+    public static Material coolDown = Material.BLAZE_SPAWN_EGG;
+
     @EventHandler
     public void onFishEvent(PlayerFishEvent event){
         Player player = event.getPlayer();
@@ -36,6 +39,12 @@ public class Rod implements Listener {
         ItemStack item = player.getInventory().getItemInMainHand();
         if (!ItemInfo.isTitanTool(item)) return;
         if (!ItemInfo.isActiveImbued(item) && !ItemInfo.isActiveCharged(item)) return;
+        if (player.isFlying()){
+            if (player.hasCooldown(coolDown)) return;
+            player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.ITALIC + "Your fishing rod is too powerful! You must have steady footing to use it's ancient power!!!");
+            player.setCooldown(coolDown,20 * 30);
+            return;
+        }
         if (!event.getState().toString().equalsIgnoreCase("CAUGHT_FISH")) return;
         player.sendMessage(event.getState().toString());
         player.sendMessage("Succeeded case");

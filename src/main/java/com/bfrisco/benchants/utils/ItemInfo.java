@@ -204,7 +204,7 @@ public class ItemInfo {
         List<String> loreList = item.getItemMeta().getLore();
         for (String lore : loreList) {
             if (ACTIVE_IMBUED_LORE.contains(lore)) {
-                Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientPowerActive check");
+                /*Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientPowerActive check");*/
                 return true;
             }
         }
@@ -212,11 +212,11 @@ public class ItemInfo {
     }
 
     public static boolean isActiveCharged(ItemStack item){
-        Bukkit.getServer().getConsoleSender().sendMessage("Inside AncientChargeActive check");
+        /*Bukkit.getServer().getConsoleSender().sendMessage("Inside AncientChargeActive check");*/
         List<String> loreList = item.getItemMeta().getLore();
         for (String lore : loreList) {
             if (ACTIVE_CHARGED_LORE.contains(lore)) {
-                Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientChargeActive check");
+                /*Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientChargeActive check");*/
                 return true;
             }
         }
@@ -224,11 +224,11 @@ public class ItemInfo {
     }
 
     public static boolean isDormantCharged(ItemStack item){
-        Bukkit.getServer().getConsoleSender().sendMessage("Inside AncientChargeActive check");
+        /*Bukkit.getServer().getConsoleSender().sendMessage("Inside AncientChargeActive check");*/
         List<String> loreList = item.getItemMeta().getLore();
         for (String lore : loreList) {
             if (INACTIVE_LORE.contains(lore)) {
-                Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientChargeActive check");
+                /*Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientChargeActive check");*/
                 return true;
             }
         }
@@ -265,9 +265,9 @@ public class ItemInfo {
         if (loreList == null) return false;
         Material type = item.getType();
         Material powerCrystal = Material.AMETHYST_SHARD;
-        Bukkit.getServer().getConsoleSender().sendMessage("inside isPowerCrystal");
+        /*Bukkit.getServer().getConsoleSender().sendMessage("inside isPowerCrystal");*/
         if (loreList.stream().anyMatch(lore -> lore.matches(POWER_CRYSTAL) && (type == powerCrystal))){
-            Bukkit.getServer().getConsoleSender().sendMessage("passed isPowerCrystal check");
+            /*Bukkit.getServer().getConsoleSender().sendMessage("passed isPowerCrystal check");*/
             return true;
         };
 
@@ -281,9 +281,9 @@ public class ItemInfo {
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
         Material type = item.getType();
-        Material fireCharge = Material.FIRE_CHARGE;
+        Material powerCrystal = Material.AMETHYST_SHARD;
         for (String lore : loreList) {
-            if (lore.matches("(.*)" + ANCIENT_CHARGE + "(.*)") && (type != fireCharge)) {
+            if (lore.matches("(.*)" + ANCIENT_CHARGE + "(.*)") && (type != powerCrystal)) {
                 return true;
             }
         }
@@ -307,11 +307,8 @@ public class ItemInfo {
     }
 
     public static Integer getAncientPowerLoreIndex(List<String> loreList) {
-        Bukkit.getServer().getConsoleSender().sendMessage("inside of getAncientPowerLoreIndex");
+  /*      Bukkit.getServer().getConsoleSender().sendMessage("inside of getAncientPowerLoreIndex");*/
         for (int i = 0; i < loreList.size(); i++){
-/*            if (IMBUED_LORE.contains(loreList.get(i)) ||
-                    UNIMBUED_LORE.contains(loreList.get(i)) ||
-                    CHARGED_LORE.contains(loreList.get(i))) return i;*/
             if (TITAN_LORE.contains(loreList.get(i))) return i;
         }
         return null;

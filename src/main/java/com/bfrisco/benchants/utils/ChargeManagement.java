@@ -1,8 +1,7 @@
 package com.bfrisco.benchants.utils;
 
-import com.bfrisco.benchants.enchants.TitanPickSilk.PickSilk;
-import com.bfrisco.benchants.enchants.TitanPickSilk.PickSilkInfo;
-import org.bukkit.Bukkit;
+import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -13,7 +12,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -98,11 +96,12 @@ public class ChargeManagement implements Listener {
                 item.setItemMeta(meta);
             } else
             loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + remainingCharge);
+            player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CRemaining Charge: " + ChatColor.YELLOW + remainingCharge));
             ItemMeta meta = item.getItemMeta();
             meta.setLore(loreList);
             item.setItemMeta(meta);
+
         }
-        PickSilk.isSameTool.put(player,item);
     }
 
     public static void decreaseChargeLore2(ItemStack item, Player player){
@@ -137,13 +136,13 @@ public class ChargeManagement implements Listener {
                 meta.setLore(loreList);
                 item.setItemMeta(meta);
             } else
-                loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + remainingCharge);
+            loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + remainingCharge);
+            player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CRemaining Charge: " + ChatColor.YELLOW + remainingCharge));
             ItemMeta meta = item.getItemMeta();
             meta.setLore(loreList);
             item.setItemMeta(meta);
         }
-        PickSilk.isSameTool.put(player,item);
-        Bukkit.getServer().getConsoleSender().sendMessage(PickSilk.isSameTool.get(player).toString());
+
     }
 
     public static void decreaseChargeLore3(ItemStack item, Player player){
@@ -178,11 +177,11 @@ public class ChargeManagement implements Listener {
                 meta.setLore(loreList);
                 item.setItemMeta(meta);
             } else
-                loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + remainingCharge);
+            loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + remainingCharge);
+            player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CRemaining Charge: " + ChatColor.YELLOW + remainingCharge));
             ItemMeta meta = item.getItemMeta();
             meta.setLore(loreList);
             item.setItemMeta(meta);
         }
-        PickSilk.isSameTool.put(player,item);
     }
 }

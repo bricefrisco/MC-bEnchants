@@ -5,6 +5,9 @@ import com.bfrisco.benchants.commands.PlayerCommands;
 
 import com.bfrisco.benchants.enchants.*;
 import com.bfrisco.benchants.enchants.TitanAxe.Axe;
+import com.bfrisco.benchants.enchants.TitanAxe.ToggleChargedAxe;
+import com.bfrisco.benchants.enchants.TitanAxe.ToggleImbuedAxe;
+import com.bfrisco.benchants.utils.McMMOManager;
 import com.bfrisco.benchants.enchants.TitanPickSilk.PickSilk;
 import com.bfrisco.benchants.enchants.TitanPickSilk.ToggleChargedPickSilk;
 import com.bfrisco.benchants.enchants.TitanPickSilk.ToggleImbuedPickSilk;
@@ -21,12 +24,10 @@ import com.bfrisco.benchants.utils.ToggleImbuedItem;
 import com.bfrisco.benchants.utils.ToggleChargedItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -52,6 +53,8 @@ public class BEnchants extends JavaPlugin {
         Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "bEnchants  E N A B L E D  with emphasis!!!!!!");
         Bukkit.getPluginManager().registerEvents(new Trench(), this);
         Bukkit.getPluginManager().registerEvents(new Axe(), this);
+        Bukkit.getPluginManager().registerEvents(new ToggleChargedAxe(), this);
+        Bukkit.getPluginManager().registerEvents(new ToggleImbuedAxe(), this);
 
         Bukkit.getPluginManager().registerEvents(new PickSilk(), this);
         Bukkit.getPluginManager().registerEvents(new ToggleChargedPickSilk(), this);
@@ -73,6 +76,7 @@ public class BEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new SuperMan(),this);
 
         Bukkit.getPluginManager().registerEvents(new PowerCrystalAdd(),this);
+        Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
 
 /*        Bukkit.getPluginManager().registerEvents(new HoverBoots(),this);*/
 

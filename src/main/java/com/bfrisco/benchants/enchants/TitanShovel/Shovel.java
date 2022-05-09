@@ -97,7 +97,7 @@ public class Shovel implements Listener {
             if (!e.isCancelled()) {
                 clickedBlock.setType(Material.AIR);
             }
-            ChargeManagement.decreaseChargeLore(item, player);
+            ChargeManagement.decreaseChargeLore2(item, player);
             for (Block blockLoop : getNearbyBlocks3(clickedBlock.getLocation(), blockFace)) {
                 if (blockLoop.getLocation().equals(clickedBlock.getLocation())) {
                     continue;

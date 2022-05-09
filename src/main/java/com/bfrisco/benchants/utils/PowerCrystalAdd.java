@@ -20,13 +20,15 @@ public class PowerCrystalAdd implements Listener {
 
     @EventHandler
     public static void diamondBreak(BlockBreakEvent event){
-        Player player = event.getPlayer();
-        if (!player.hasPermission("benchants.powercrystaldrop")) return;
         Block block = event.getBlock();
         if (block.getType() != Material.DIAMOND_ORE && block.getType() != Material.DEEPSLATE_DIAMOND_ORE ) return;
+        Player player = event.getPlayer();
+        if (!player.hasPermission("benchants.powercrystaldrop")) return;
         if (player.getInventory().getItemInMainHand().getType() == Material.DIAMOND_SHOVEL) return;
         if (player.getInventory().getItemInMainHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)) return;
         Location loc = block.getLocation();
+        Block newBlock = block.getRelative(0,-1,0);
+        newBlock.setType(Material.JIGSAW);
         ItemStack powerCrystal = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
         lore.add("§x§F§F§0§0§4§CAncient Charge");

@@ -1,4 +1,4 @@
-package com.bfrisco.benchants.enchants.TitanPickSilk;
+package com.bfrisco.benchants.enchants.TitanAxe;
 
 import com.bfrisco.benchants.enchants.TitanRod.RodInfo;
 import com.bfrisco.benchants.utils.BEnchantEffects;
@@ -15,9 +15,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-public class ToggleChargedPickSilk implements Listener {
+public class ToggleChargedAxe implements Listener {
 
-    public static Material pick = Material.DIAMOND_PICKAXE;
+    public static Material axe = Material.DIAMOND_AXE;
 
     @EventHandler
     public static void activateClick(PlayerInteractEvent event) {
@@ -27,7 +27,7 @@ public class ToggleChargedPickSilk implements Listener {
         if (!event.getAction().isRightClick()) return;
         if (!player.isSneaking()) return;
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getType() != pick) return;
+        if (item.getType() != axe) return;
         if (!item.getEnchantments().containsKey(Enchantment.SILK_TOUCH)) return;
         if (!item.hasItemMeta()) return;
         if (!ItemInfo.isTitanTool(item)) return;
@@ -37,28 +37,28 @@ public class ToggleChargedPickSilk implements Listener {
         if (!player.hasPermission("benchants.charge.toggle")) return;
         player.sendMessage("Passed activateClick checks");
         event.setCancelled(true);
-        toggleChargedPickSilkEnchant(item,player);
+        toggleChargedAxeEnchant(item,player);
     }
 
-    public static void toggleChargedPickSilkEnchant(ItemStack item, Player player){
+    public static void toggleChargedAxeEnchant(ItemStack item, Player player){
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return;
-        if (RodInfo.getChargedState(item) == 1) {
-            silkPick1ToSilkPick2(item);
+        if (AxeInfo.getChargedState(item) == 1) {
+            axe1ToAxe2(item);
             new BEnchantEffects().disableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to Enchant2");
-        } else if (RodInfo.getChargedState(item) == 2) {
-            silkPick2ToSilkPick3(item);
+            player.sendMessage(ChatColor.GREEN + "Axe set to Enchant2");
+        } else if (AxeInfo.getChargedState(item) == 2) {
+            axe2ToAxe3(item);
             new BEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to Enchant3");
-        } else if (RodInfo.getChargedState(item) == 3) {
+            player.sendMessage(ChatColor.GREEN + "Axe set to Enchant3");
+        } else if (AxeInfo.getChargedState(item) == 3) {
             disableChargedItem(item);
             new BEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to dormant");
+            player.sendMessage(ChatColor.GREEN + "Axe set to dormant");
         } else if (ItemInfo.isDormantCharged(item)) {
             enableChargedItem(item);
             new BEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to Enchant1");
+            player.sendMessage(ChatColor.GREEN + "Axe set to Enchant1");
         }
 
     }
@@ -80,7 +80,7 @@ public class ToggleChargedPickSilk implements Listener {
         meta.setLore(loreList);
         item.setItemMeta(meta);
     }
-    public static void silkPick1ToSilkPick2(ItemStack item) {
+    public static void axe1ToAxe2(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         loreList.set(index,ItemInfo.CHARGED_TWO);
@@ -88,7 +88,7 @@ public class ToggleChargedPickSilk implements Listener {
         meta.setLore(loreList);
         item.setItemMeta(meta);
     }
-    public static void silkPick2ToSilkPick3(ItemStack item) {
+    public static void axe2ToAxe3(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         loreList.set(index,ItemInfo.CHARGED_THREE);

@@ -4,6 +4,7 @@ main: com.bfrisco.benchants.BEnchants
 author: bfrisco
 description: bEnchants custom enchants
 api-version: 1.18
+softdepend: [mcMMO]
 
 commands:
   ancient:

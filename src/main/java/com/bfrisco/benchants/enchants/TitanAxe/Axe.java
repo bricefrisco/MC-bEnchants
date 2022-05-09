@@ -1,9 +1,20 @@
 package com.bfrisco.benchants.enchants.TitanAxe;
 
+
 import com.bfrisco.benchants.BEnchants;
+import com.bfrisco.benchants.enchants.TitanPickSilk.ToggleChargedPickSilk;
+import com.bfrisco.benchants.enchants.TitanPickSilk.ToggleImbuedPickSilk;
+import com.bfrisco.benchants.utils.BEnchantEffects;
 import com.bfrisco.benchants.utils.ChargeManagement;
 import com.bfrisco.benchants.utils.ItemInfo;
+import com.gmail.nossr50.commands.skills.WoodcuttingCommand;
+import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
+import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityEvent;
+import com.gmail.nossr50.skills.axes.Axes;
+import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
+import com.gmail.nossr50.util.BlockUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,10 +22,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.api.AbilityAPI;
 
 import java.util.*;
 
@@ -23,9 +37,6 @@ public class Axe implements Listener {
     public static final Set<Material> ENCHANTABLE_ITEMS = new HashSet<>();
     public static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
     public static final Material axe = Material.DIAMOND_AXE;
-    public static final HashMap<Material, Material> treeMap = new HashMap<>();
-    public static final Set<Material> TREE_TYPES = new HashSet<>();
-    public static final Set<Material> SAPLINGS = new HashSet<>();
     HashMap<Material,Material> REPLANT_MAP = new HashMap<>();
     {
         REPLANT_MAP.putIfAbsent(Material.OAK_LOG,Material.OAK_SAPLING);
@@ -50,6 +61,7 @@ public class Axe implements Listener {
 
         }
     };
+    public static Material coolDown = Material.BAT_SPAWN_EGG;
 
 
     public Axe() {
@@ -60,10 +72,7 @@ public class Axe implements Listener {
     @SuppressWarnings("unused")
     public void onBlockBreakEvent(BlockBreakEvent event) {
 
-
-
-
-
+        if (AbilityAPI.treeFellerEnabled(event.getPlayer())) return;
 
         if (IGNORE_LOCATIONS.contains(event.getBlock().getLocation())) {
             IGNORE_LOCATIONS.remove(event.getBlock().getLocation());
@@ -74,32 +83,90 @@ public class Axe implements Listener {
         if (item.getType() != axe) return;
         if (!ItemInfo.isTitanTool(item)) return;
         if (!ItemInfo.isActiveImbued(item) && !ItemInfo.isActiveCharged(item)) return;
+        if (player.isFlying()){
+            if (player.hasCooldown(coolDown)) return;
+            player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.ITALIC + "Your axe is too powerful! You must have steady footing to use it's ancient power!!!");
+            player.setCooldown(coolDown,20 * 30);
+            return;
+        }
 
         Block blockBroken = event.getBlock();
         Location blockBrokenLocation = blockBroken.getLocation();
+        event.setCancelled(true);
 
-        for (Block blockLoop : generateSphere(blockBrokenLocation,5,false)) {
-            if (blockLoop.getLocation().equals(blockBrokenLocation)) {
-                continue;
-            }
-            if (DIRT_TYPES.contains(blockLoop.getRelative(0,-1,0).getType()) && REPLANT_MAP.containsKey(blockLoop.getType())){
-                player.sendMessage("Key and V: " + REPLANT_MAP.get(blockBroken.getType()) );
-                blockLoop.setType(REPLANT_MAP.get(blockLoop.getType()) );
-            }
-            if (ALLOWED_ITEMS.contains(blockLoop.getType())) {
-                IGNORE_LOCATIONS.add(blockLoop.getLocation());
-
-                BlockBreakEvent e = new BlockBreakEvent(blockLoop, player);
-                Bukkit.getPluginManager().callEvent(e);
-                if (!e.isCancelled()) {
-                    if (!hasSilkTouch(item)) {
-                        dropExperience(blockLoop);
+        if (ItemInfo.isLevelOne(item)) {
+            blockBroken.breakNaturally(item);
+            for (Block blockLoop : generateSphere(blockBrokenLocation, 5, false)) {
+                if (blockLoop.getLocation().equals(blockBrokenLocation)) {
+                    continue;
+                }
+                if (ALLOWED_ITEMS.contains(blockLoop.getType())) {
+                    IGNORE_LOCATIONS.add(blockLoop.getLocation());
+                    BlockBreakEvent e = new BlockBreakEvent(blockLoop, player);
+                    Bukkit.getPluginManager().callEvent(e);
+                    if (!e.isCancelled()) {
+                        if (!hasSilkTouch(item)) {
+                            dropExperience(blockLoop);
+                        }
+                        e.setCancelled(true);
+                        blockLoop.breakNaturally(item);
                     }
-                    blockLoop.breakNaturally(item);
                 }
             }
+            ChargeManagement.decreaseChargeLore(item, player);
+        } else if (ItemInfo.isLevelTwo(item)) {
+            blockBroken.breakNaturally(item);
+            for (Block blockLoop : generateSphere(blockBrokenLocation, 5, false)) {
+                if (blockLoop.getLocation().equals(blockBrokenLocation)) {
+                    continue;
+                }
+                if (DIRT_TYPES.contains(blockLoop.getRelative(0, -1, 0).getType()) && REPLANT_MAP.containsKey(blockLoop.getType())) {
+                    player.sendMessage("Key and V: " + REPLANT_MAP.get(blockLoop.getType()));
+                    blockLoop.setType(REPLANT_MAP.get(blockLoop.getType()));
+                }
+                if (ALLOWED_ITEMS.contains(blockLoop.getType())) {
+                    IGNORE_LOCATIONS.add(blockLoop.getLocation());
+
+                    BlockBreakEvent e = new BlockBreakEvent(blockLoop, player);
+                    Bukkit.getPluginManager().callEvent(e);
+                    if (!e.isCancelled()) {
+                        if (!hasSilkTouch(item)) {
+                            dropExperience(blockLoop);
+                        }
+                        e.setCancelled(true);
+                        blockLoop.breakNaturally(item);
+                    }
+                }
+            }
+            ChargeManagement.decreaseChargeLore2(item, player);
+//TODO: REBUILD THIRD ENCHANTMENT
+        } else if (ItemInfo.isLevelThree(item)) {
+            blockBroken.breakNaturally(item);
+            for (Block blockLoop : generateSphere(blockBrokenLocation, 5, false)) {
+                if (blockLoop.getLocation().equals(blockBrokenLocation)) {
+                    continue;
+                }
+                if (DIRT_TYPES.contains(blockLoop.getRelative(0, -1, 0).getType()) && REPLANT_MAP.containsKey(blockLoop.getType())) {
+                    player.sendMessage("Key and V: " + REPLANT_MAP.get(blockLoop.getType()));
+                    blockLoop.setType(REPLANT_MAP.get(blockLoop.getType()));
+                }
+                if (ALLOWED_ITEMS.contains(blockLoop.getType())) {
+                    IGNORE_LOCATIONS.add(blockLoop.getLocation());
+
+                    BlockBreakEvent e = new BlockBreakEvent(blockLoop, player);
+                    Bukkit.getPluginManager().callEvent(e);
+                    if (!e.isCancelled()) {
+                        if (!hasSilkTouch(item)) {
+                            dropExperience(blockLoop);
+                        }
+                        e.setCancelled(true);
+                        blockLoop.breakNaturally(item);
+                    }
+                }
+            }
+            ChargeManagement.decreaseChargeLore3(item, player);
+
         }
-        ChargeManagement.decreaseChargeLore(item, player);
 /*        if (blockBelow.getType() != blockBroken.getType()){
             if (blockBelow.getType() == Material.DIRT){
                 blockBroken.setType(Material.OAK_SAPLING);

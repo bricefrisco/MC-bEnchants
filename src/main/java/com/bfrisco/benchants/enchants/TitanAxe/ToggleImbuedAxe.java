@@ -1,4 +1,4 @@
-package com.bfrisco.benchants.enchants.TitanPickSilk;
+package com.bfrisco.benchants.enchants.TitanAxe;
 
 import com.bfrisco.benchants.enchants.TitanRod.RodInfo;
 import com.bfrisco.benchants.utils.BEnchantEffects;
@@ -15,15 +15,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-public class ToggleChargedPickSilk implements Listener {
-
+public class ToggleImbuedAxe implements Listener {
     public static Material pick = Material.DIAMOND_PICKAXE;
 
     @EventHandler
     public static void activateClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Material coolDown = Material.JIGSAW;
-
         if (!event.getAction().isRightClick()) return;
         if (!player.isSneaking()) return;
         ItemStack item = player.getInventory().getItemInMainHand();
@@ -31,67 +29,65 @@ public class ToggleChargedPickSilk implements Listener {
         if (!item.getEnchantments().containsKey(Enchantment.SILK_TOUCH)) return;
         if (!item.hasItemMeta()) return;
         if (!ItemInfo.isTitanTool(item)) return;
-        if (!ItemInfo.hasCharge(item)) return;
+        if (!ItemInfo.isImbued(item)) return;
         if (player.hasCooldown(coolDown)) return;
         player.setCooldown(coolDown,25);
-        if (!player.hasPermission("benchants.charge.toggle")) return;
-        player.sendMessage("Passed activateClick checks");
+        if (!player.hasPermission("benchants.toggle")) return;
         event.setCancelled(true);
-        toggleChargedPickSilkEnchant(item,player);
+        toggleImbuedAxe(item,player);
     }
 
-    public static void toggleChargedPickSilkEnchant(ItemStack item, Player player){
+    public static void toggleImbuedAxe(ItemStack item, Player player){
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return;
-        if (RodInfo.getChargedState(item) == 1) {
-            silkPick1ToSilkPick2(item);
+        if (AxeInfo.getImbuedState(item) == 1) {
+            Axe1ToAxe2(item);
             new BEnchantEffects().disableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to Enchant2");
-        } else if (RodInfo.getChargedState(item) == 2) {
-            silkPick2ToSilkPick3(item);
+            player.sendMessage(ChatColor.GREEN + "Axe set to Enchant2");
+        } else if (AxeInfo.getImbuedState(item) == 2) {
+            axe2ToAxe3(item);
             new BEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to Enchant3");
-        } else if (RodInfo.getChargedState(item) == 3) {
-            disableChargedItem(item);
+            player.sendMessage(ChatColor.GREEN + "Axe set to Enchant3");
+        } else if (AxeInfo.getImbuedState(item) == 3) {
+            disableImbuedAxe(item);
             new BEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to dormant");
+            player.sendMessage(ChatColor.GREEN + "Axe set to dormant");
         } else if (ItemInfo.isDormantCharged(item)) {
-            enableChargedItem(item);
+            enableImbuedAxe(item);
             new BEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to Enchant1");
+            player.sendMessage(ChatColor.GREEN + "Axe set to Enchant1");
         }
-
     }
 
-    public static void enableChargedItem(ItemStack item) {
+    public static void enableImbuedAxe(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.CHARGED_ONE);
+        loreList.set(index,ItemInfo.IMBUED_ONE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
     }
 
-    public static void disableChargedItem(ItemStack item) {
+    public static void disableImbuedAxe(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.CHARGED_INACTIVE);
+        loreList.set(index,ItemInfo.IMBUED_INACTIVE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
     }
-    public static void silkPick1ToSilkPick2(ItemStack item) {
+    public static void Axe1ToAxe2(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.CHARGED_TWO);
+        loreList.set(index,ItemInfo.IMBUED_TWO);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
     }
-    public static void silkPick2ToSilkPick3(ItemStack item) {
+    public static void axe2ToAxe3(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.CHARGED_THREE);
+        loreList.set(index,ItemInfo.IMBUED_THREE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);

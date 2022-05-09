@@ -26,7 +26,6 @@ public class PickSilk implements Listener {
     public static final Set<Material> ALLOWED_ITEMS = new HashSet<>();
     public static final Set<Material> ENCHANTABLE_ITEMS = new HashSet<>();
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
-    public static final HashMap<Player, ItemStack> isSameTool = new HashMap<>();
     public static final Material pick = Material.DIAMOND_PICKAXE;
 
     public PickSilk() {
@@ -130,13 +129,7 @@ public class PickSilk implements Listener {
                     }
                 }
             }
-
-
-
         }
-
-
-
     }
 
     public static void loadConfig() {
